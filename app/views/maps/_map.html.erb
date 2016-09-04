@@ -1,0 +1,4 @@
+<li>
+  <%= link_to map.title, map_path(map) %>
+  <%= link_to "Delete", map_path(map), method: :delete, data: {confirm: "are you sure?"} %>
+</li>

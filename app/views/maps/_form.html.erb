@@ -1,0 +1,21 @@
+<%= form_for @map do |f| %>
+  <fieldset class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <%= f.label :raw_address, 'Address' %>
+    <%= f.text_field :raw_address %>
+    <small class="text-muted">You can also enter IP. Your IP is <%= request.ip %></small>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <%= f.label :latitude %>
+    <%= f.text_field :latitude %>
+    <%= f.label :longitude %>
+    <%= f.text_field :longitude %>
+  </fieldset>
+  <a href="#" id="find-on-map">Find on the Map</a>
+  <%= f.submit 'Add!', class: 'btn btn-primary' %>
+<% end %>
