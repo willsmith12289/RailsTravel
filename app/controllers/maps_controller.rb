@@ -9,6 +9,7 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
+    @marker = @map.markers.find_by map_id: @map
     @lat = @map.latitude
     @lng = @map.longitude
   end
@@ -20,6 +21,14 @@ class MapsController < ApplicationController
       redirect_to root_path
     else
       render 'new'
+    end
+  end
+
+  def update
+    @map = Map.find(params[:id])
+    @marker = @map.markers.find_by map_id: @map
+    if @map.update(map_params)
+      redirect_to map_marker_path
     end
   end
 

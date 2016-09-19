@@ -2,14 +2,16 @@
 
 one:
   title: MyString
-  address: MyText
+  address: MyString
   latitude: 1.5
   longitude: 1.5
-  notes: MyText
+  info: MyText
+  map_id: 
 
 two:
   title: MyString
-  address: MyText
+  address: MyString
   latitude: 1.5
   longitude: 1.5
-  notes: MyText
+  info: MyText
+  map_id: 
