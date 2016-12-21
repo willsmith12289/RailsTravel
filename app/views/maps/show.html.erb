@@ -2,7 +2,7 @@
 <p>Address: <%= @map.address %></p>
 <p>Coordinates: <%= @lat %> <%= @lng %> </p>
 <%= link_to "Delete", @map, method: :delete, data: {confirm: "are you sure?"} %>
-<p>Address: <%= @marker.address %> </p>
+
 <div id="map"></div>
 <div>
 <%= render "markers/new" %>

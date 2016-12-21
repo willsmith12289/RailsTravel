@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160914015107) do
+ActiveRecord::Schema.define(version: 20160904222200) do
 
   create_table "maps", force: :cascade do |t|
     t.string   "title"
@@ -21,18 +21,5 @@ ActiveRecord::Schema.define(version: 20160914015107) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "markers", force: :cascade do |t|
-    t.string   "title"
-    t.string   "address"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.text     "info"
-    t.integer  "map_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "markers", ["map_id"], name: "index_markers_on_map_id"
 
 end

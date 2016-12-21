@@ -9,7 +9,7 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
-    @marker = @map.markers.find_by map_id: @map
+   # @marker = @map.markers.find_by map_id: @map
     @lat = @map.latitude
     @lng = @map.longitude
   end
