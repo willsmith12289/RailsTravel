@@ -28,7 +28,7 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
     @marker = @map.markers.find_by map_id: @map
     if @map.update(map_params)
-      redirect_to map_marker_path
+      redirect_to map_marker_path(params[:id])
     end
   end
 

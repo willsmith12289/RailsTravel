@@ -1,10 +1,11 @@
 class MarkersController < ApplicationController
   before_action :set_marker, only: [:show, :edit, :update, :destroy]
-
+  #before_action :set_map, only: [:index]
   # GET /markers
   # GET /markers.json
   def index
     @markers = Marker.all
+    #@map = params[:map_id]
   end
 
   # GET /markers/1
@@ -15,6 +16,7 @@ class MarkersController < ApplicationController
   # GET /markers/new
   def new
     @marker = Marker.new
+    @map = params[:map_id]
   end
 
   # GET /markers/1/edit
@@ -24,17 +26,11 @@ class MarkersController < ApplicationController
   # POST /markers
   # POST /markers.json
   def create
-    @map = Map.find(params[:map_id])
-    @marker = @map.marker.new(marker_params)
-
-    respond_to do |format|
-      if @marker.save
-        format.html { redirect_to @marker, notice: 'Marker was successfully created.' }
-        format.json { render :show, status: :created, location: @marker }
-      else
-        format.html { render :new }
-        format.json { render json: @marker.errors, status: :unprocessable_entity }
-      end
+    @marker = Marker.new(marker_params)
+    if @marker.save
+      render('show')
+    else
+      render('new')
     end
   end
 
@@ -68,8 +64,12 @@ class MarkersController < ApplicationController
       @marker = Marker.find(params[:id])
     end
 
+    # def set_map
+    #   @map = params[:map_id]
+    # end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def marker_params
-      params.require(:marker).permit(:title, :address, :latitude, :longitude, :info, :map_id)
+      params.require(:marker).permit(:title, :raw_address, :latitude, :longitude, :info, :map_id)
     end
 end

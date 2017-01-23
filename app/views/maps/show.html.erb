@@ -5,11 +5,12 @@
 
 <div id="map"></div>
 <div>
-<%= render "markers/new" %>
+<%= link_to "Add Marker", new_marker_path(:map_id => @map.id) %>
 </div>
 <script type="text/javascript">
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: <%= @lat %>, lng: <%= @lng %> },
-    zoom: 16
+    zoom: 16,
+
 });
 </script>
