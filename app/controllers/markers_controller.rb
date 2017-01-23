@@ -5,7 +5,7 @@ class MarkersController < ApplicationController
   # GET /markers.json
   def index
     @markers = Marker.all
-    #@map = params[:map_id]
+    @map = params[:map_id]
   end
 
   # GET /markers/1

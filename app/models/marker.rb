@@ -14,5 +14,5 @@ attr_accessor :map_id
   after_validation :reverse_geocode, unless: ->(obj) { obj.raw_address.present? },
                    if: ->(obj){ obj.latitude.present? and obj.latitude_changed? and obj.longitude.present? and obj.longitude_changed? }
 
-  scope :sorted, lambda { where(:map_id =>) }
+ # scope :sorted, lambda { where(:map_id =>) }
 end

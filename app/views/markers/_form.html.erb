@@ -33,7 +33,7 @@
   </div>
   <div class="field">
     <%= f.label :map_id %><br>
-    <%= f.text_field :map_id, :value => @map %>
+    <%= f.hidden_field :map_id, :value => params[:map_id] %>
   </div>
   <div class="actions">
     <%= f.submit %>
