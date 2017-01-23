@@ -1,7 +1,7 @@
 class Marker < ActiveRecord::Base
   belongs_to :map
 attr_accessor :raw_address
-attr_accessor :map_id
+
 
    geocoded_by :raw_address
   reverse_geocoded_by :latitude, :longitude

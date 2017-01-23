@@ -23,7 +23,7 @@
         <td><%= marker.latitude %></td>
         <td><%= marker.longitude %></td>
         <td><%= marker.info %></td>
-        <td><%= params[:map_id] %></td>
+        <td><%= marker.map_id %></td>
         <td><%= link_to 'Show', marker %></td>
         <td><%= link_to 'Edit', edit_marker_path(marker) %></td>
         <td><%= link_to 'Destroy', marker, method: :delete, data: { confirm: 'Are you sure?' } %></td>

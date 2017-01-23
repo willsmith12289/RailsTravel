@@ -1,11 +1,11 @@
 class MarkersController < ApplicationController
   before_action :set_marker, only: [:show, :edit, :update, :destroy]
-  #before_action :set_map, only: [:index]
+  #before_action :set_map
   # GET /markers
   # GET /markers.json
   def index
     @markers = Marker.all
-    @map = params[:map_id]
+   # @map = params[:map_id]
   end
 
   # GET /markers/1
@@ -16,7 +16,8 @@ class MarkersController < ApplicationController
   # GET /markers/new
   def new
     @marker = Marker.new
-    @map = params[:map_id]
+   # @map = params[:map_id]
+
   end
 
   # GET /markers/1/edit
@@ -65,7 +66,7 @@ class MarkersController < ApplicationController
     end
 
     # def set_map
-    #   @map = params[:map_id]
+    #   @map = params[:map]
     # end
 
     # Never trust parameters from the scary internet, only allow the white list through.

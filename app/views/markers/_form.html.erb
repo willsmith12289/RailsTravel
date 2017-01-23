@@ -32,8 +32,7 @@
     <%= f.text_area :info %>
   </div>
   <div class="field">
-    <%= f.label :map_id %><br>
-    <%= f.hidden_field :map_id, :value => params[:map_id] %>
+    <%= f.hidden_field :map_id, :value => params[:map] %>
   </div>
   <div class="actions">
     <%= f.submit %>
