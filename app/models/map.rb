@@ -1,5 +1,7 @@
 class Map < ActiveRecord::Base
   attr_accessor :raw_address
+  has_many :markers
+  #accepts_nested_attributes_for :markers
 
   geocoded_by :raw_address
   reverse_geocoded_by :latitude, :longitude
@@ -11,5 +13,5 @@ class Map < ActiveRecord::Base
 
   after_validation :reverse_geocode, unless: ->(obj) { obj.raw_address.present? },
                    if: ->(obj){ obj.latitude.present? and obj.latitude_changed? and obj.longitude.present? and obj.longitude_changed? }
-  has_many :markers
+  
 end

@@ -1,4 +1,4 @@
-<%= form_for(@marker) do |f| %>
+<%= form_for(@marker, :url => map_markers_path(@map)) do |f| %>
   <% if @marker.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@marker.errors.count, "error") %> prohibited this marker from being saved:</h2>
@@ -32,7 +32,7 @@
     <%= f.text_area :info %>
   </div>
   <div class="field">
-    <%= f.hidden_field :map_id, :value => params[:map] %>
+    <%= f.hidden_field :map_id, :value => params[:map_id] %>
   </div>
   <div class="actions">
     <%= f.submit %>

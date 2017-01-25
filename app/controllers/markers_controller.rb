@@ -4,17 +4,21 @@ class MarkersController < ApplicationController
   # GET /markers
   # GET /markers.json
   def index
+    @map = Map.find(params[:map_id])
     @markers = Marker.all
+    @markers = Marker.where(map_id: @map)
    # @map = params[:map_id]
   end
 
   # GET /markers/1
   # GET /markers/1.json
   def show
+    @map = Map.find(params[:map_id])
   end
 
   # GET /markers/new
   def new
+    @map = Map.find(params[:map_id])
     @marker = Marker.new
    # @map = params[:map_id]
 
@@ -54,7 +58,7 @@ class MarkersController < ApplicationController
   def destroy
     @marker.destroy
     respond_to do |format|
-      format.html { redirect_to markers_url, notice: 'Marker was successfully destroyed.' }
+      format.html { redirect_to map_markers_url, notice: 'Marker was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -71,6 +75,6 @@ class MarkersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def marker_params
-      params.require(:marker).permit(:title, :raw_address, :latitude, :longitude, :info, :map_id)
+      params.require(:marker).permit(:id, :title, :raw_address, :latitude, :longitude, :info, :map_id)
     end
 end
