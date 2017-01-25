@@ -13,6 +13,9 @@ class MapsController < ApplicationController
     @lat = @map.latitude
     @lng = @map.longitude
     @markers = Marker.where(map_id: @map)
+    @marker = Marker.find_by map_id: @map
+    @mark_lat = @marker.latitude
+    @mark_lng = @marker.longitude
   end
 
   def create

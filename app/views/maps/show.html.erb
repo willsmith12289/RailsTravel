@@ -6,11 +6,29 @@
 <div id="map"></div>
 <div>
 <%= link_to "Add Marker", new_map_marker_path(@map) %>
+<table>
+<% @markers.each do |marker| %>
+  <tr>
+    <td><%= marker.title %></td>
+    <td><%= marker.address %></td>
+    <td>Lat:<%= marker.latitude %></td>
+    <td>Lng:<%= marker.longitude %></td>
+    <td><%= marker.info %></td>
+    <td><%= marker.map_id %></td>
+  <tr>
+<% end %>
+</table>
+
 </div>
 <script type="text/javascript">
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: <%= @lat %>, lng: <%= @lng %> },
     zoom: 16,
 
-});
+  });
+    var marker = new google.maps.Marker({
+    position: {lat: <%= @mark_lat %>, lng: <%= @mark_lng %>},
+    map: map,
+    title: 'Hello World!'
+  });
 </script>
