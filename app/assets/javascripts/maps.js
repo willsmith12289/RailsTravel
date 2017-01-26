@@ -15,24 +15,23 @@ function initialize() {
 
   for (var i = 0; i < lat_lng_array.length; i++) {
     var lat_lngs = new google.maps.LatLng(lat_lng_array[i][0], lat_lng_array[i][1]);
-    // var content = infos;
-    // var infoWindow = new google.maps.InfoWindow({
-    //   content: "'"+content+"'"
-    // });
-    var marker = new google.maps.Marker({
-      position: lat_lngs,
-      animation: google.maps.Animation.DROP,
-      map: map,
-    });
-//adds newly created marker to markers array
-    marker.addListener('click', function() {
-      if (marker.getAnimation() !== null) {
-        marker.setAnimation(null);
-      } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
+    var info = infos[i];
+    addMarker(lat_lngs, info);
+  };
 
-       // infoWindow.open(map, marker);
-      }
+  function addMarker(location, info) {
+    var marker = new google.maps.Marker({
+      position: location,
+      animation: google.maps.Animation.DROP,
+      map: map
+    });
+    marker.setMap(map);
+    var content = "<p>"+"'"+info+"'"+"</p>";
+    marker.infowindow = new google.maps.InfoWindow({
+      content: content
+    });
+    google.maps.event.addListener(marker, 'click', function() {
+      this.infowindow.open(map, this);
     });
     markers.push(marker);
   }
