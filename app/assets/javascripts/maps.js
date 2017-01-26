@@ -30,8 +30,16 @@ function initialize() {
     marker.infowindow = new google.maps.InfoWindow({
       content: content
     });
+    var prevInfo;
     google.maps.event.addListener(marker, 'click', function() {
+      if (prevInfo) {
+        prevInfo.close();
+      } else {
+      prevInfo = this.infowindow;
       this.infowindow.open(map, this);
+      this.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function(){ marker.setAnimation(null); }, 2150)
+      }
     });
     markers.push(marker);
   }
