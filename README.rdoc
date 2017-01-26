@@ -1,28 +1,9 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Try using GON gem to pass each markers lat and lng to javascript
 
-Things you may want to cover:
+http://www.thegreatcodeadventure.com/here-today-still-here-today-using-gon-with-javascript-and-rails/
 
-* Ruby version
+https://lizmrush.com/how-to-plot-coordinates-on-a-map-with-rails-and-the-google-maps-javascript-api/
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+http://railsguides.net/pass-variables-to-javascript-in-rails-with-gon/

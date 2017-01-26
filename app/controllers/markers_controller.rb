@@ -31,6 +31,7 @@ class MarkersController < ApplicationController
   # POST /markers
   # POST /markers.json
   def create
+    @map = Map.find(params[:map_id])
     @marker = Marker.new(marker_params)
     if @marker.save
       render('show')

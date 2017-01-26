@@ -9,10 +9,11 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
-   # @marker = @map.markers.find_by map_id: @map
-    @lat = @map.latitude
-    @lng = @map.longitude
+    gon.lat = @map.latitude
+    gon.lng = @map.longitude
     @markers = Marker.where(map_id: @map)
+    gon.lat_lng_array = Map.coordinates(@map)
+    gon.info = Map.info(@map)
   end
 
   def create
