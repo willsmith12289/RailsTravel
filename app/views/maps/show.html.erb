@@ -1,17 +1,7 @@
+<section>
 <h1><%= @map.title %></h1>
-<p>Address: <%= @map.address %></p>
-<p>Coordinates: <%= @lat %> <%= @lng %> </p>
-<%= link_to "Delete", @map, method: :delete, data: {confirm: "are you sure?"} %>
-
-<div id="map"></div>
-<div>
 <%= link_to "Add Marker", new_map_marker_path(@map) %>
-</div>
-<%= javascript_include_tag 'maps.js' %>
-<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?callback=initialize"></script>
-
+</section>
 <table>
 <% @markers.each do |marker| %>
   <tr>
@@ -24,3 +14,10 @@
   <tr>
 <% end %>
 </table>
+<div id="map"></div>
+<%= javascript_include_tag 'maps.js' %>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?callback=initialize"></script>
+
+

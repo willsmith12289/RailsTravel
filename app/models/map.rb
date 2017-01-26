@@ -20,9 +20,8 @@ class Map < ActiveRecord::Base
   end
 
   def self.info(map_id)
-    infos = Array.new
     info = Marker.where("map_id = ?", map_id).pluck(:info)
-    infos.push(info)
+    info
   end
 
 end
