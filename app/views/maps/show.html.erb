@@ -2,22 +2,17 @@
 <h1><%= @map.title %></h1>
 <%= link_to "Add Marker", new_map_marker_path(@map) %>
 </section>
-<table>
-<% @markers.each do |marker| %>
-  <tr>
-    <td><%= marker.title %></td>
-    <td><%= marker.address %></td>
-    <td>Lat:<%= marker.latitude %></td>
-    <td>Lng:<%= marker.longitude %></td>
-    <td><%= marker.info %></td>
-    <td><%= marker.map_id %></td>
-  <tr>
-<% end %>
-</table>
+
+<div id="form">
+  <%= render 'markers/form' %>
+</div>
+
 <div id="map"></div>
 <%= javascript_include_tag 'maps.js' %>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?callback=initialize"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&callback=initialize"></script>
 
-
+<table id="markers">
+<%= render(@map.markers) %>
+</table>

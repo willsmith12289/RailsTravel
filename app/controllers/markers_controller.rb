@@ -21,7 +21,6 @@ class MarkersController < ApplicationController
     @map = Map.find(params[:map_id])
     @marker = Marker.new
    # @map = params[:map_id]
-
   end
 
   # GET /markers/1/edit
@@ -33,10 +32,16 @@ class MarkersController < ApplicationController
   def create
     @map = Map.find(params[:map_id])
     @marker = Marker.new(marker_params)
-    if @marker.save
-      render('show')
-    else
-      render('new')
+    @markers = Marker.where(map_id: @map)
+    respond_to do |format|
+      if @marker.save
+        format.html { redirect_to map_url }
+        format.js
+        format.json { render action: 'show', status: :created, location: @marker }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @marker.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -59,8 +64,9 @@ class MarkersController < ApplicationController
   def destroy
     @marker.destroy
     respond_to do |format|
-      format.html { redirect_to map_markers_url, notice: 'Marker was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to map_url(params[:map_id]), notice: 'Marker was successfully destroyed.' }
+      #format.js
+      # format.json { render action: 'show', status: :created, location: @marker }
     end
   end
 
