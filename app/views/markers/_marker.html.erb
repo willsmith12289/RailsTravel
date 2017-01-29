@@ -1,0 +1,29 @@
+<tr>
+  <td>
+    <%= marker.title %>
+  </td>
+  <td>
+    <%= marker.address %>
+  </td>
+  <td>
+    <%= marker.latitude %>
+  </td>
+  <td>
+    <%= marker.longitude %>
+  </td>
+  <td>
+    <%= marker.info %>
+  </td>
+  <td>
+    <%= marker.map_id %>
+  </td>
+  <td>
+    <%= link_to 'Show', map_marker_path(@map, marker) %>
+  </td>
+  <td>
+    <%= link_to 'Edit', edit_map_marker_path(@map, marker) %>
+  </td>
+  <td>
+    <%= link_to 'Destroy', map_marker_path(@map, marker), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+</tr>

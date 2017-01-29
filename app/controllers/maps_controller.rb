@@ -11,6 +11,7 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
     gon.lat = @map.latitude
     gon.lng = @map.longitude
+    @marker = Marker.new
     @markers = Marker.where(map_id: @map)
     gon.lat_lng_array = Map.coordinates(@map)
     gon.info = Map.info(@map)
