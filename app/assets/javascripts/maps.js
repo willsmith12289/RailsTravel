@@ -4,7 +4,8 @@ function initialize() {
     center: {lat: gon.lat, lng: gon.lng },
     zoom: 12
   };
-
+  var input = document.getElementById('marker_raw_address');
+  var autocomplete = new google.maps.places.Autocomplete(input);
   var map = new google.maps.Map(document.getElementById('map'), myOptions);
 //array of arrays containing latlng coords
   var lat_lng_array = gon.lat_lng_array;
@@ -43,7 +44,7 @@ function initialize() {
     });
     markers.push(marker);
   }
-
+console.log(markers);
   var markerCluster = new MarkerClusterer(map, markers,
     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 }
