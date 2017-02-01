@@ -23,5 +23,5 @@ class Map < ActiveRecord::Base
     info = Marker.where("map_id = ?", map_id).pluck(:info)
     info
   end
-
+  
 end
