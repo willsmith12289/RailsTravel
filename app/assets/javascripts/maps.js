@@ -1,42 +1,87 @@
 function initialize() {
+
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		center: {
 			lat: gon.lat,
 			lng: gon.lng
 		},
-		zoom: 12
+		zoom: 12,
+		scrollwheel: false,
+		draggable: true,
 	};
-	//auto complete, set map, and bias autocomplete to current maps bounds
-	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
-	var submitBtn = document.getElementById('markerFormSubmit');
+	var markers = [];
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+	//auto complete / bias autocomplete to current maps bounds
+	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
+	var form = document.getElementById('form');
+	form.addEventListener("submit", autoComplete);
+	var placeInput = document.getElementById('marker_place_id');
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
 	});
-	var markers = [];
-	var p = gon.place_id;
-	console.log(p);
-	//get latlngs from database and geocode them for a place.id to send to addMarker
-	//geocodeLatLng();
 
-	function geocodeLatLng() {
+
+	/*
+	 *  when address in autocomplete is selected place_id is posted to Marker
+	 */
+	addressInput.addListener('places_changed', function() {
+		var places = addressInput.getPlaces();
+		places.forEach(function(place) {
+			var placeId = place.place_id;
+			placeInput.value = placeId;
+		})
+	});
+
+
+	/*
+	 * grab correct place_id and info from marker model
+	 */
+	 document.addEventListener("DOMContentLoaded", function() {
+	 	var tRows = document.getElementsByTagName('tr');
+		for (var i = 0; i < tRows.length; i++) {
+			var placeId = tRows[i].cells[6].textContent;
+			placeId = placeId.toString();
+			placeId = placeId.trim();
+			console.log(placeId);
+			getPlaceFromId(placeId);
+		};
+	 })
+	
+	
+	// var table = document.getElementById('markers');
+	// console.log(table.rows);
+	// for (var r = 0, n = table.rows.length; r < n; r++) {
+	// 	alert(table.rows[r].cells[6].innerHTML);
+	// }
+
+	/*
+	 * get latlngs from database and geocode them for a place.id to send to marker
+	 */
+	function getPlaceFromId(place) {
+		console.log(place);
 		var request = {
-			placeId: gon.place_id
+			placeId: place
 		};
 		var service = new google.maps.places.PlacesService(map);
 		service.getDetails(request, callback);
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
+				alert(place.name);
 				addMarker(place);
 			}
 		}
 	};
 
-	submitBtn.onclick = function() {
+
+	/*
+	 * get place on form submit and call createMarker on place
+	 */
+	function autoComplete() {
 		var Gplace = addressInput.getPlaces();
-		console.log(Gplace);
+
 		// For each place, get the icon, name and location.
 		var bounds = new google.maps.LatLngBounds();
 		Gplace.forEach(function(place) {
@@ -52,26 +97,16 @@ function initialize() {
 			} else {
 				bounds.extend(place.geometry.location);
 			}
-
-			$.ajax({
-				url: gon.path,
-				type: "post",
-				dataType: "json",
-				data: JSON.stringify({
-					place_id: place.place_id
-				}),
-				 success:function(result)//we got the response
-       {
-        alert('Successfully called');
-       },
-       error:function(exception){alert('Exeption:'+exception);}
-
-
-			});
+			var placeId = place.place_id;
 		});
 		map.fitBounds(bounds);
 	};
 
+
+	/*
+	 * assigns icon, creates marker/infowindow, populates w/ getDetails request
+	 * Pushes marker to markers array for use in marker clusterer
+	 */
 	function addMarker(place) {
 		var icon = {
 			url: place.icon,
@@ -88,7 +123,7 @@ function initialize() {
 		});
 		marker.infowindow = new google.maps.InfoWindow();
 
-		console.log(place);
+		//console.log(place);
 		var service = new google.maps.places.PlacesService(map);
 
 		service.getDetails({

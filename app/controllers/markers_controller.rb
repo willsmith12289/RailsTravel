@@ -33,7 +33,7 @@ class MarkersController < ApplicationController
     @map = Map.find(params[:map_id])
     @marker = Marker.new(marker_params)
     @markers = Marker.where(map_id: @map)
-    @place_id = params[:place_id]
+    gon.place_id = params[:place_id]
     respond_to do |format|
       if @marker.save
         format.html { redirect_to map_url }
