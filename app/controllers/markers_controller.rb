@@ -33,6 +33,7 @@ class MarkersController < ApplicationController
     @map = Map.find(params[:map_id])
     @marker = Marker.new(marker_params)
     @markers = Marker.where(map_id: @map)
+    gon.place_id = params[:place_id]
     respond_to do |format|
       if @marker.save
         format.html { redirect_to map_url }
@@ -82,6 +83,6 @@ class MarkersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def marker_params
-      params.require(:marker).permit(:id, :title, :raw_address, :latitude, :longitude, :info, :map_id)
+      params.require(:marker).permit(:id, :title, :raw_address, :latitude, :longitude, :info, :map_id, :place_id)
     end
 end

@@ -1,150 +1,145 @@
 function initialize() {
+
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		center: {
 			lat: gon.lat,
 			lng: gon.lng
 		},
-		zoom: 12
+		zoom: 12,
+		scrollwheel: false,
+		draggable: true,
 	};
-	//auto complete, set map, and bias autocomplete to current maps bounds
-	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
-	var submitBtn = document.getElementById('markerFormSubmit');
+	var markers = [];
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+	//auto complete / bias autocomplete to current maps bounds
+	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
+	var form = document.getElementById('form');
+	form.addEventListener("submit", autoComplete);
+	var placeInput = document.getElementById('marker_place_id');
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
 	});
 
-	var markers = [];
-	// Listen for the event fired when the user selects a prediction and retrieve
-	// more details for that place.
-	submitBtn.onclick = function() {
+
+	/*
+	 *  when address in autocomplete is selected place_id is posted to Marker
+	 */
+	addressInput.addListener('places_changed', function() {
 		var places = addressInput.getPlaces();
+		places.forEach(function(place) {
+			var placeId = place.place_id;
+			placeInput.value = placeId;
+		})
+	});
 
-		if (places.length == 0) {
-			return;
+
+	/*
+	 * grab correct place_id and info from marker model
+	 */
+	 document.addEventListener("DOMContentLoaded", function() {
+	 	var tRows = document.getElementsByTagName('tr');
+		for (var i = 0; i < tRows.length; i++) {
+			var placeId = tRows[i].cells[6].textContent;
+			placeId = placeId.toString();
+			placeId = placeId.trim();
+			console.log(placeId);
+			getPlaceFromId(placeId);
+		};
+	 })
+	
+	
+	// var table = document.getElementById('markers');
+	// console.log(table.rows);
+	// for (var r = 0, n = table.rows.length; r < n; r++) {
+	// 	alert(table.rows[r].cells[6].innerHTML);
+	// }
+
+	/*
+	 * get latlngs from database and geocode them for a place.id to send to marker
+	 */
+	function getPlaceFromId(place) {
+		console.log(place);
+		var request = {
+			placeId: place
+		};
+		var service = new google.maps.places.PlacesService(map);
+		service.getDetails(request, callback);
+
+		function callback(place, status) {
+			if (status == google.maps.places.PlacesServiceStatus.OK) {
+				alert(place.name);
+				addMarker(place);
+			}
 		}
+	};
 
-		// Clear out the old markers.
-		// markers.forEach(function(marker) {
-		// 	marker.setMap(null);
-		// });
-		markers = [];
+
+	/*
+	 * get place on form submit and call createMarker on place
+	 */
+	function autoComplete() {
+		var Gplace = addressInput.getPlaces();
 
 		// For each place, get the icon, name and location.
 		var bounds = new google.maps.LatLngBounds();
-		places.forEach(function(place) {
+		Gplace.forEach(function(place) {
 			if (!place.geometry) {
 				console.log("Returned place contains no geometry");
 				return;
 			}
-			var icon = {
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(25, 25)
-			};
-
 			// Create a marker for each place.
-			markers.push(new google.maps.Marker({
-				map: map,
-				icon: icon,
-				title: place.name,
-				position: place.geometry.location
-			}));
-
+			addMarker(place);
 			if (place.geometry.viewport) {
 				// Only geocodes have viewport.
 				bounds.union(place.geometry.viewport);
 			} else {
 				bounds.extend(place.geometry.location);
 			}
+			var placeId = place.place_id;
 		});
 		map.fitBounds(bounds);
 	};
 
-	// 	//push place objects into places array
-	// 	var places = [];
-	// 	var place = addressInput.getPlace()
-	// 	places.push(place);
 
+	/*
+	 * assigns icon, creates marker/infowindow, populates w/ getDetails request
+	 * Pushes marker to markers array for use in marker clusterer
+	 */
+	function addMarker(place) {
+		var icon = {
+			url: place.icon,
+			size: new google.maps.Size(71, 71),
+			origin: new google.maps.Point(0, 0),
+			anchor: new google.maps.Point(17, 34),
+			scaledSize: new google.maps.Size(25, 25)
+		};
+		var marker = new google.maps.Marker({
+			map: map,
+			icon: icon,
+			title: place.name,
+			position: place.geometry.location
+		});
+		marker.infowindow = new google.maps.InfoWindow();
 
-	// 	//Clear out the old places and add info property to marker
-	// 	places.forEach(function(place) {
-	// 		console.log(places);
-	// 	});
+		//console.log(place);
+		var service = new google.maps.places.PlacesService(map);
 
-	// 	// For each place, get the icon, name and location.
-	// 	var bounds = new google.maps.LatLngBounds();
-	// 	places.forEach(function(place) {
-	// 		if (!place.geometry) {
-	// 			console.log("Returned place contains no geometry");
-	// 			return;
-	// 		}
-	// 		var icon = {
-	// 			url: place.icon,
-	// 			size: new google.maps.Size(71, 71),
-	// 			origin: new google.maps.Point(0, 0),
-	// 			anchor: new google.maps.Point(17, 34),
-	// 			scaledSize: new google.maps.Size(25, 25)
-	// 		};
-
-	// 		// Create a marker for each place.
-	// 		places.forEach(function(place) {
-	// 			addMarker(place);
-	// 		});
-
-	// 		function addMarker(place) {
-	// 			var marker = new google.maps.Marker({
-	// 				map: map,
-	// 				icon: icon,
-	// 				title: place.name,
-	// 				position: place.geometry.location
-	// 			});
-	// 			marker.setMap(map);
-	// 			var content = "<p>" + info + "</p>";
-	// 			marker.infowindow = new google.maps.InfoWindow({
-	// 				content: content
-	// 			});
-	// 			var prevInfo = false;
-	// 			google.maps.event.addListener(marker, 'click', function() {
-	// 				if (prevInfo) {
-	// 					prevInfo.close();
-	// 				} else {
-	// 					prevInfo = marker.infowindow;
-	// 					this.infowindow.open(map, this);
-	// 					this.setAnimation(google.maps.Animation.BOUNCE);
-	// 					setTimeout(function() {
-	// 						marker.setAnimation(null);
-	// 					}, 2150)
-	// 				}
-	// 			});
-	// 		}
-
-
-	// 		if (place.geometry.viewport) {
-	// 			// Only geocodes have viewport.
-	// 			bounds.union(place.geometry.viewport);
-	// 		} else {
-	// 			bounds.extend(place.geometry.location);
-	// 		}
-	// 	});
-	// 	map.fitBounds(bounds);
-
-
-	// // //array of arrays containing latlng coords
-	// //   var lat_lng_array = gon.lat_lng_array;
-	// //   var infos = gon.info;
-
-	// // //Set empty array of markers
-	// //   var markers = [];
-
-	// //   for (var i = 0; i < lat_lng_array.length; i++) {
-	// // 	var lat_lngs = new google.maps.LatLng(lat_lng_array[i][0], lat_lng_array[i][1]);
-	// // 	var info = infos[i];
-	// // 	addMarker(lat_lngs, info);
-	// //   };
+		service.getDetails({
+			placeId: place.place_id
+		}, function(place, status) {
+			if (status === google.maps.places.PlacesServiceStatus.OK) {
+				google.maps.event.addListener(marker, 'click', function() {
+					this.infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+						'Place ID: ' + place.place_id + '<br>' +
+						place.formatted_address + '</div><br><p>' + place.formatted_phone_number + '</p>');
+					this.infowindow.open(map, this);
+				});
+			};
+		});
+		markers.push(marker);
+	};
 
 	var markerCluster = new MarkerClusterer(map, markers, {
 		imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
