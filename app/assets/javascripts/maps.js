@@ -47,20 +47,13 @@ function initialize() {
 			console.log(placeId);
 			getPlaceFromId(placeId);
 		};
-	 })
+	 });
 	
-	
-	// var table = document.getElementById('markers');
-	// console.log(table.rows);
-	// for (var r = 0, n = table.rows.length; r < n; r++) {
-	// 	alert(table.rows[r].cells[6].innerHTML);
-	// }
 
 	/*
-	 * get latlngs from database and geocode them for a place.id to send to marker
+	 * Make place service request on place_id passed from dom event listener
 	 */
 	function getPlaceFromId(place) {
-		console.log(place);
 		var request = {
 			placeId: place
 		};
@@ -69,7 +62,6 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				alert(place.name);
 				addMarker(place);
 			}
 		}
