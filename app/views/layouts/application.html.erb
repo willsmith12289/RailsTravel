@@ -7,11 +7,14 @@
   <%= include_gon %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
 
 </head>
 <body>
 <%= yield %>
+
 
 </body>
 </html>

@@ -1,4 +1,5 @@
-	 var markers = [];
+var markers = [];
+
 function initialize() {
 
 	var myOptions = {
@@ -11,7 +12,7 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
-	
+
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
 
 	//auto complete / bias autocomplete to current maps bounds
@@ -45,7 +46,6 @@ function initialize() {
 			var placeId = tRows[i].cells[6].textContent;
 			placeId = placeId.toString();
 			placeId = placeId.trim();
-			console.log(placeId);
 			getPlaceFromId(placeId);
 		};
 	});
@@ -97,8 +97,8 @@ function initialize() {
 
 
 	/*
-	 * assigns icon, creates marker/infowindow, populates w/ getDetails request
-	 * Pushes marker to markers array for use in marker clusterer
+	 * assigns icon, creates marker, makes getDetails request and calls
+	 * formatInfoWindow() Pushes marker to markers array for use in      * marker clusterer
 	 */
 
 	function addMarker(place) {
@@ -117,7 +117,11 @@ function initialize() {
 		});
 		markers.push(marker);
 		marker.infowindow = new google.maps.InfoWindow();
-
+		var infos = gon.info;
+		marker.info;
+				for (var i = 0; i < markers.length; i++) {
+					marker.info = infos[i];
+				}
 		//console.log(place);
 		var service = new google.maps.places.PlacesService(map);
 
@@ -125,20 +129,46 @@ function initialize() {
 			placeId: place.place_id
 		}, function(place, status) {
 			if (status === google.maps.places.PlacesServiceStatus.OK) {
-				google.maps.event.addListener(marker, 'click', function() {
-					this.infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-						'Place ID: ' + place.place_id + '<br>' +
-						place.formatted_address + '</div><br><p>' + place.formatted_phone_number + '</p>');
-					this.infowindow.open(map, this);
-				});
+				google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
 			};
 		});
 	};
+
+
+/*
+* Gets returned details and assigns them to infowindow content
+*/
+	function formatInfoWindow(place) {
+		var name = place.name,
+				open = place.opening_hours.open_now,
+				address = place.vicinity,
+				phoneI = place.international_phone_number,
+				phone = place.formatted_phone_number
+				rating = place.rating,
+				reviewAuth = place.reviews[0].author_name,
+				reviewText = place.reviews[0].text,
+				reviewRate = place.reviews[0].rating,
+				website = place.website,
+				// img = place.photos[0],
+				// photo = img.getUrl(),
+				info = this.info;
+		this.infowindow.setContent(
+'<div class="infowindow"><strong><h1>' + name + '</h1></strong>' +
+	'<address>' +	address + '</address>'+
+	'<p>Open Now: ' + open + '&nbsp;&nbsp;&nbsp; Rating: ' + rating +  '&nbsp;&nbsp;&nbsp; ' + '<a href="' + website + '">Website</a></p>'+
+	'<p><a href="tel:' + phoneI + '">'+phone+'</a></p>'+
+	'<h3><b>Notes:</b></h3>'+
+	'<p>' + info + '</p>'+
+	'<h4>' + reviewAuth + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: '+reviewRate+'</h4>'+
+	'<p>' + reviewText + '</p>'+
+	//'<img src='+ photo + ' ></img>'+
+'</div>'
+		);
+		this.infowindow.open(map, this);
+	}
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
-		imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-	});
+			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+		});
 	};
-		
-	
 }

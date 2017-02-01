@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  post ':map_id/markers', :to => 'markers#create'
 
   resources :maps do
     resources :markers
