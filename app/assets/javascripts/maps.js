@@ -1,3 +1,4 @@
+	 var markers = [];
 function initialize() {
 
 	var myOptions = {
@@ -10,7 +11,7 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
-	var markers = [];
+	
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
 
 	//auto complete / bias autocomplete to current maps bounds
@@ -38,8 +39,8 @@ function initialize() {
 	/*
 	 * grab correct place_id and info from marker model
 	 */
-	 document.addEventListener("DOMContentLoaded", function() {
-	 	var tRows = document.getElementsByTagName('tr');
+	document.addEventListener("DOMContentLoaded", function() {
+		var tRows = document.getElementsByTagName('tr');
 		for (var i = 0; i < tRows.length; i++) {
 			var placeId = tRows[i].cells[6].textContent;
 			placeId = placeId.toString();
@@ -47,8 +48,8 @@ function initialize() {
 			console.log(placeId);
 			getPlaceFromId(placeId);
 		};
-	 });
-	
+	});
+
 
 	/*
 	 * Make place service request on place_id passed from dom event listener
@@ -99,6 +100,7 @@ function initialize() {
 	 * assigns icon, creates marker/infowindow, populates w/ getDetails request
 	 * Pushes marker to markers array for use in marker clusterer
 	 */
+
 	function addMarker(place) {
 		var icon = {
 			url: place.icon,
@@ -113,6 +115,7 @@ function initialize() {
 			title: place.name,
 			position: place.geometry.location
 		});
+		markers.push(marker);
 		marker.infowindow = new google.maps.InfoWindow();
 
 		//console.log(place);
@@ -130,10 +133,12 @@ function initialize() {
 				});
 			};
 		});
-		markers.push(marker);
 	};
-
-	var markerCluster = new MarkerClusterer(map, markers, {
+	window.onload = function() {
+		var markerCluster = new MarkerClusterer(map, markers, {
 		imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
 	});
+	};
+		
+	
 }
