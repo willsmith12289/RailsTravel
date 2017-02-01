@@ -141,7 +141,7 @@ function initialize() {
 	function formatInfoWindow(place) {
 		var name = place.name,
 				open = place.opening_hours.open_now,
-				address = place.formatted_address,
+				address = place.vicinity,
 				phoneI = place.international_phone_number,
 				phone = place.formatted_phone_number
 				rating = place.rating,
@@ -149,17 +149,19 @@ function initialize() {
 				reviewText = place.reviews[0].text,
 				reviewRate = place.reviews[0].rating,
 				website = place.website,
+				// img = place.photos[0],
+				// photo = img.getUrl(),
 				info = this.info;
 		this.infowindow.setContent(
 '<div class="infowindow"><strong><h1>' + name + '</h1></strong>' +
-	'<p>Open Now: ' + open + '</p>'+
 	'<address>' +	address + '</address>'+
-	'<p><a href="' + website + '">Website</a></p>'+
+	'<p>Open Now: ' + open + '&nbsp;&nbsp;&nbsp; Rating: ' + rating +  '&nbsp;&nbsp;&nbsp; ' + '<a href="' + website + '">Website</a></p>'+
 	'<p><a href="tel:' + phoneI + '">'+phone+'</a></p>'+
-	'<p>Rating: ' + rating + '</p>'+
+	'<h3><b>Notes:</b></h3>'+
+	'<p>' + info + '</p>'+
 	'<h4>' + reviewAuth + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: '+reviewRate+'</h4>'+
 	'<p>' + reviewText + '</p>'+
-	'<p>' + info + '</p>'+
+	//'<img src='+ photo + ' ></img>'+
 '</div>'
 		);
 		this.infowindow.open(map, this);
