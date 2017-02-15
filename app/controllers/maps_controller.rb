@@ -4,6 +4,7 @@ class MapsController < ApplicationController
 
   def index
     @maps = current_user.maps.order('created_at DESC')
+    @user = current_user.email
   end
 
   def new
