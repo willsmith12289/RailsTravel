@@ -1,9 +1,3 @@
 == README
 
-Try using GON gem to pass each markers lat and lng to javascript
-
-http://www.thegreatcodeadventure.com/here-today-still-here-today-using-gon-with-javascript-and-rails/
-
-https://lizmrush.com/how-to-plot-coordinates-on-a-map-with-rails-and-the-google-maps-javascript-api/
-
-http://railsguides.net/pass-variables-to-javascript-in-rails-with-gon/
+try integrating wikimedia wikitravel api into infowindows
