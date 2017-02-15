@@ -139,33 +139,71 @@ function initialize() {
 * Gets returned details and assigns them to infowindow content
 */
 	function formatInfoWindow(place) {
+
 		var name = place.name,
+				nameStr = `<div class="infowindow"><strong><h1>${name}</h1></strong>`,
 				open = place.opening_hours.open_now,
+				openStr = `Open Now: ${open}`,
 				address = place.vicinity,
+				addressStr = `<address>${address}</address>`,
 				phoneI = place.international_phone_number,
-				phone = place.formatted_phone_number
+				phone = place.formatted_phone_number,
+				phoneStr = `<p><a href="tel:${phoneI}">${phone}</a></p>`,
 				rating = place.rating,
+				ratingStr = `Rating: ${rating}`,
 				reviewAuth = place.reviews[0].author_name,
-				reviewText = place.reviews[0].text,
 				reviewRate = place.reviews[0].rating,
+				reviewAuthStr = `<h4>${reviewAuth}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ${reviewRate}</h4>`
+				reviewText = place.reviews[0].text,
+				reviewStr = `<p>${reviewText}</p>`,
 				website = place.website,
-				// img = place.photos[0],
-				// photo = img.getUrl(),
-				info = this.info;
+				websiteStr = `<a href="${website}">Website</a>`,
+				img = place.photos[0],
+				photo = img.getUrl(),
+				photoStr = `<img src='+ photo + ' ></img></div>`,
+				info = this.info,
+				infoStr = `<h3><b>Notes:</b></h3><p>${info}</p>`;
+
+		var infoWindowArray = [name, open, address,phoneI, phone, rating, reviewAuth, reviewText, reviewRate, website, img, photo, info];
+		for (var i = 0; i < infoWindowArray.length; i++) {
+			if (typeof infoWindowArray[i] === 'undefined') {
+				infoWindowArray.splice(infoWindowArray[i], 1);
+			};
+		};
+				
 		this.infowindow.setContent(
-'<div class="infowindow"><strong><h1>' + name + '</h1></strong>' +
-	'<address>' +	address + '</address>'+
-	'<p>Open Now: ' + open + '&nbsp;&nbsp;&nbsp; Rating: ' + rating +  '&nbsp;&nbsp;&nbsp; ' + '<a href="' + website + '">Website</a></p>'+
-	'<p><a href="tel:' + phoneI + '">'+phone+'</a></p>'+
-	'<h3><b>Notes:</b></h3>'+
-	'<p>' + info + '</p>'+
-	'<h4>' + reviewAuth + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: '+reviewRate+'</h4>'+
-	'<p>' + reviewText + '</p>'+
-	//'<img src='+ photo + ' ></img>'+
-'</div>'
+			checkPlaceVar (infoWindowArray, name, nameStr);
+			checkPlaceVar (infoWindowArray, address, addressStr);
+			checkPlaceVar (infoWindowArray, open, openStr);
+			checkPlaceVar (infoWindowArray, rating, ratingStr);
+			checkPlaceVar (infoWindowArray, website, websiteStr);
+			checkPlaceVar (infoWindowArray, phone, phoneStr);
+			checkPlaceVar (infoWindowArray, info, infoStr);
+			checkPlaceVar (infoWindowArray, reviewAuth, reviewAuthStr);
+			checkPlaceVar (infoWindowArray, reviewText, reviewStr);
+			checkPlaceVar (infoWindowArray, photo, photoStr);
+
+// '<div class="infowindow"><strong><h1>' + name + '</h1></strong>' +
+// 	'<address>' +	address + '</address>'+
+// 	'<p>Open Now: ' + open + '&nbsp;&nbsp;&nbsp; Rating: ' + rating +  '&nbsp;&nbsp;&nbsp; ' + '<a href="' + website + '">Website</a></p>'+
+// 	'<p><a href="tel:' + phoneI + '">'+phone+'</a></p>'+
+// 	'<h3><b>Notes:</b></h3>'+
+// 	'<p>' + info + '</p>'+
+// 	'<h4>' + reviewAuth + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: '+reviewRate+'</h4>'+
+// 	'<p>' + reviewText + '</p>'+
+// 	'<img src='+ photo + ' ></img>'+
+// '</div>'
 		);
 		this.infowindow.open(map, this);
 	}
+
+	//check infoWindowArray for given variable and print string if exists
+	function checkPlaceVar(arr, placeVar, str) {
+		if (arr[placeVar]) {
+			return str;
+		}
+	};
+
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
 			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
