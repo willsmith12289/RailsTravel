@@ -1,10 +1,13 @@
 class MapsController < ApplicationController
+
+  before_action :authenticate_user!
+
   def index
-    @maps = Map.order('created_at DESC')
+    @maps = current_user.maps.order('created_at DESC')
   end
 
   def new
-    @map = Map.new
+    @map = current_user.maps.build
   end
 
   def show
@@ -17,7 +20,7 @@ class MapsController < ApplicationController
   end
 
   def create
-    @map = Map.new(map_params)
+    @map = current_user.maps.build(map_params)
     if @map.save
       flash[:success] = "Map Added"
       redirect_to root_path

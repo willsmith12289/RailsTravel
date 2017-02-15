@@ -1,7 +1,8 @@
 class Map < ActiveRecord::Base
   attr_accessor :raw_address
   has_many :markers
-
+  belongs_to :user
+  
   geocoded_by :raw_address
   reverse_geocoded_by :latitude, :longitude
 

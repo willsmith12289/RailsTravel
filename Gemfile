@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'devise'
 gem 'geocoder'
 gem 'gon'
 gem 'rails', '4.2.6'
