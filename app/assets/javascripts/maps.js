@@ -139,31 +139,41 @@ function initialize() {
 * Gets returned details and assigns them to infowindow content
 */
 	function formatInfoWindow(place) {
-		var name = place.name,
-				open = place.opening_hours.open_now,
-				address = place.vicinity,
-				phoneI = place.international_phone_number,
-				phone = place.formatted_phone_number
-				rating = place.rating,
-				reviewAuth = place.reviews[0].author_name,
-				reviewText = place.reviews[0].text,
-				reviewRate = place.reviews[0].rating,
-				website = place.website,
-				// img = place.photos[0],
-				// photo = img.getUrl(),
-				info = this.info;
-		this.infowindow.setContent(
-'<div class="infowindow"><strong><h1>' + name + '</h1></strong>' +
-	'<address>' +	address + '</address>'+
-	'<p>Open Now: ' + open + '&nbsp;&nbsp;&nbsp; Rating: ' + rating +  '&nbsp;&nbsp;&nbsp; ' + '<a href="' + website + '">Website</a></p>'+
-	'<p><a href="tel:' + phoneI + '">'+phone+'</a></p>'+
-	'<h3><b>Notes:</b></h3>'+
-	'<p>' + info + '</p>'+
-	'<h4>' + reviewAuth + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: '+reviewRate+'</h4>'+
-	'<p>' + reviewText + '</p>'+
-	//'<img src='+ photo + ' ></img>'+
-'</div>'
-		);
+		// if (place.photos) {
+		// 	var img = place.photos[0];
+		// }
+		var placeInfo = {
+			name: place.name,
+			open: place.opening_hours.open_now,
+			address: place.vicinity,
+			phoneI: place.international_phone_number,
+			phone: place.formatted_phone_number,
+			rating: place.rating,
+			reviewAuth: place.reviews[0].author_name,
+			reviewText: place.reviews[0].text,
+			reviewRate: place.reviews[0].rating,
+			website: place.website,
+			//photo: img.getUrl(),
+			info: this.info
+		}
+
+		var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
+    		'<address>##address##</address>' +
+    		'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
+    		'<p><a href="tel:##phoneI##">##phone##</a></p>' +
+    		'<h3><b>Notes:</b></h3>' +
+    		'<p>##info##</p>' +
+    		'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
+    		'<p>##reviewText##</p>' +
+    		'<img src="##photo##"></img>' +
+    '</div>';
+
+//replaces var between ##'s with property of placeInfo object, or empty string
+    var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
+    	return placeInfo[prop] || placeInfo[prop] == "";
+  	});
+
+		this.infowindow.setContent(content);
 		this.infowindow.open(map, this);
 	}
 	window.onload = function() {
