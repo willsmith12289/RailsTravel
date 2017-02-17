@@ -1,10 +1,10 @@
 class MapsController < ApplicationController
-
+  #prepend_before_action
   before_action :authenticate_user!
 
   def index
     @maps = current_user.maps.order('created_at DESC')
-    @user = current_user.email
+    @email = current_user.email
   end
 
   def new
