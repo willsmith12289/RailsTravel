@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Travel</title>
   <%= csrf_meta_tags %>
-  <%= include_gon %>
+  <%= Gon::Base.render_data %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
@@ -19,10 +19,6 @@
 
 <%= yield %>
 
-#<%= javascript_include_tag 'maps.js' %>
 
-<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
 </body>
 </html>
