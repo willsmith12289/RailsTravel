@@ -14,7 +14,9 @@ function initialize() {
 	};
 
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
-
+	// var infowindow = new InfoBubble({
+	// 	maxWidth: 300
+ //   });
 	//auto complete / bias autocomplete to current maps bounds
 	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
 	var form = document.getElementById('form');
@@ -116,7 +118,9 @@ function initialize() {
 			position: place.geometry.location
 		});
 		markers.push(marker);
-		marker.infowindow = new google.maps.InfoWindow();
+		marker.infowindow = new InfoBubble({
+		maxWidth: 300
+   });
 		var infos = gon.info;
 		marker.info;
 		for (var i = 0; i < markers.length; i++) {
@@ -213,8 +217,17 @@ function initialize() {
 			return placeInfo[prop] || "";
 		});
 
-		this.infowindow.setContent(content);
+		this.infowindow.addTab('Basic', content)
+		customInfo(this.infowindow, this.info);
+		//infowindow.setContent(content);
 		this.infowindow.open(map, this);
+	}
+
+	function customInfo (iWindow, info) {
+		var customInfo = info,
+				infoTab = iWindow;
+		infoTab.addTab('Form', "hello");
+		
 	}
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
@@ -222,3 +235,4 @@ function initialize() {
 		});
 	};
 }
+document.onload = initialize();
