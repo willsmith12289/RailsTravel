@@ -14,6 +14,7 @@ class MarkersController < ApplicationController
   # GET /markers/1.json
   def show
     @map = Map.find(params[:map_id])
+    @marker = Marker.find(params[:id])
   end
 
   # GET /markers/new
@@ -25,6 +26,8 @@ class MarkersController < ApplicationController
 
   # GET /markers/1/edit
   def edit
+    @map = Map.find(params[:map_id])
+
   end
 
   # POST /markers
@@ -50,9 +53,8 @@ class MarkersController < ApplicationController
   # PATCH/PUT /markers/1.json
   def update
     respond_to do |format|
-      if @marker.update(marker_params)
-        format.html { redirect_to @marker, notice: 'Marker was successfully updated.' }
-        format.json { render :show, status: :ok, location: @marker }
+      if @marker.update_attributes(marker_params)
+        format.html { redirect_to map_url}
       else
         format.html { render :edit }
         format.json { render json: @marker.errors, status: :unprocessable_entity }

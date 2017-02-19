@@ -1,0 +1,9 @@
+<%= form_for(@marker, :url => map_marker_path(@map, @marker)) do |f| %>
+  <div class="field">
+    <%= f.label :info %><br>
+    <%= f.text_area :info %>
+  </div>
+  <div class="actions" id="markerEditSubmit">
+    <%= f.submit %>
+  </div>
+<% end -%>

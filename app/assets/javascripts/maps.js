@@ -164,7 +164,7 @@ function initialize() {
 				'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
 				'<p><a href="tel:##phoneI##">##phone##</a></p>' +
 				'<h3><b>Notes:</b></h3>' +
-				'<p>##info##</p>' +
+				'<p id="pInfo">##info##</p>' +
 				'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
 				'<p>##reviewText##</p>' +
 				'<img src="##photo##"></img>' +
@@ -189,7 +189,7 @@ function initialize() {
 					'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
 					'<p><a href="tel:##phoneI##">##phone##</a></p>' +
 					'<h3><b>Notes:</b></h3>' +
-					'<p>##info##</p>' +
+					'<p id="pInfo">##info##</p>' +
 					'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
 					'<p>##reviewText##</p>' +
 					'</div>';
@@ -206,7 +206,7 @@ function initialize() {
 				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
 					'<address>##address##</address>' +
 					'<h3><b>Notes:</b></h3>' +
-					'<p>##info##</p>' +
+					'<p id="pInfo">##info##</p>' +
 					'</div>';
 			}
 		}
@@ -217,18 +217,32 @@ function initialize() {
 			return placeInfo[prop] || "";
 		});
 
-		this.infowindow.addTab('Basic', content)
-		customInfo(this.infowindow, this.info);
+		this.infowindow.addTab(placeInfo.name, content)
+		customInfo(this.infowindow, placeInfo, content);
 		//infowindow.setContent(content);
 		this.infowindow.open(map, this);
 	}
 
-	function customInfo (iWindow, info) {
-		var customInfo = info,
-				infoTab = iWindow;
-		infoTab.addTab('Form', "hello");
-		
+	function customInfo (iWindow, placeInfo, content) {
+		var iForm = document.getElementById('infoForm'),
+				iTxt = document.getElementById('info'),
+				addInfo = document.getElementById('infoBtn');
+				iTxt.value = placeInfo.info;
+
+		addInfo.onclick = function () {
+			var firstInfo = placeInfo.info,
+			newPlaceInfo = iTxt.value;
+			content = content.toString();
+			content = content.replace(firstInfo, newPlaceInfo);
+			iWindow.updateTab(0, placeInfo.name, content);
+			$.post('maps/:map_id/markers/:marker_id/edit', {info: newPlaceInfo}, function(data, textStatus, xhr) {
+				/*optional stuff to do after success */
+			});
+		}
+
+		iWindow.addTab('Form', iForm);	
 	}
+
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
 			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
