@@ -116,7 +116,9 @@ function initialize() {
 			position: place.geometry.location
 		});
 		markers.push(marker);
-		marker.infowindow = new google.maps.InfoWindow();
+		marker.infowindow = new InfoBubble({
+		maxWidth: 300
+   });
 		var infos = gon.info;
 		marker.info;
 		for (var i = 0; i < markers.length; i++) {
@@ -212,9 +214,35 @@ function initialize() {
 		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
 			return placeInfo[prop] || "";
 		});
-
-		this.infowindow.setContent(content);
+		this.infowindow.addTab('Basic', content)
+		customInfo(this.infowindow, this.info);
+		//infowindow.setContent(content);
 		this.infowindow.open(map, this);
+	}
+
+		function customInfo (iWindow, placeInfo, content) {
+		var iForm = document.getElementById('infoForm'),
+				iTxt = document.getElementById('info'),
+				addInfo = document.getElementById('infoBtn');
+				iTxt.value = placeInfo.info;
+
+		// addInfo.onclick = function () {
+		// 	var firstInfo = placeInfo.info,
+		// 	newPlaceInfo = iTxt.value;
+		// 	content = content.toString();
+		// 	content = content.replace(firstInfo, newPlaceInfo);
+		// 	iWindow.updateTab(0, placeInfo.name, content);
+		// 	$.post('maps/:map_id/markers/:marker_id/edit', {info: newPlaceInfo}, function(data, textStatus, xhr) {
+		// 		/*optional stuff to do after success */
+		// 	});
+		// }
+
+		iWindow.addTab('Form', iForm);	
+	function customInfo (iWindow, info) {
+		var customInfo = info,
+				infoTab = iWindow;
+		infoTab.addTab('Form', "hello");
+		
 	}
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
