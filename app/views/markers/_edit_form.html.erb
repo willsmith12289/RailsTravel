@@ -1,4 +1,4 @@
-<%= form_for(@marker, :url => map_marker_path(@map, @marker.id), remote: true) do |f| %>
+<%= form_for(@marker, :url => map_marker_path(@map, @marker), remote: true) do |f| %>
   <div class="field">
     <%= f.label :info %><br>
     <%= f.text_area :info %>

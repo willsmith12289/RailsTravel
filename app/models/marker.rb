@@ -1,8 +1,6 @@
 class Marker < ActiveRecord::Base
   belongs_to :map
-  has_many :map_markers
-  has_many :maps, :through => :map_markers
-  attr_accessor :raw_address
+attr_accessor :raw_address
 
 
    geocoded_by :raw_address

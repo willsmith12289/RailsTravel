@@ -1,6 +1,7 @@
 <section>
 <h1><%= @map.title %></h1>
 <h3><%= @map.user.email %></h3>
+<h2><%= @map.markers.ids %></h2>
 </section>
 
 <div id="form">
@@ -9,14 +10,14 @@
 
 <div id="map"></div>
 <div id="infoForm">
-    <textarea id="info"></textarea><br>
-  <%= link_to edit_map_marker_path(@map, @markers), remote: true  do |f| %>
+  <textarea id="info"></textarea><br>
+  <%= link_to edit_map_marker_path(@map, marker), remote: true  do |f| %>
     <button id="infoBtn">Update</button>
   <%end%>
 </div>
 
 <table id="markers">
-<%= render @map.markers %>
+<%= render(@map.markers) %>
 </table>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">

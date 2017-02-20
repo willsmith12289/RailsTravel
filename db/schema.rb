@@ -11,14 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220173702) do
-
-  create_table "map_markers", force: :cascade do |t|
-    t.integer "map_id"
-    t.integer "marker_id"
-  end
-
-  add_index "map_markers", ["map_id", "marker_id"], name: "index_map_markers_on_map_id_and_marker_id"
+ActiveRecord::Schema.define(version: 20170215155520) do
 
   create_table "maps", force: :cascade do |t|
     t.string   "title"
