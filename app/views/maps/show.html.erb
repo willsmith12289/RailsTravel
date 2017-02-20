@@ -1,6 +1,7 @@
 <section>
 <h1><%= @map.title %></h1>
 <h3><%= @map.user.email %></h3>
+<h2><%= @map.markers.ids %></h2>
 </section>
 
 <div id="form">
@@ -10,7 +11,9 @@
 <div id="map"></div>
 <div id="infoForm">
   <textarea id="info"></textarea><br>
-  <button id="infoBtn">Update</button>
+  <%= link_to edit_map_marker_path(@map, marker), remote: true  do |f| %>
+    <button id="infoBtn">Update</button>
+  <%end%>
 </div>
 
 <table id="markers">
