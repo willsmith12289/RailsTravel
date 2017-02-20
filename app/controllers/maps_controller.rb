@@ -18,6 +18,7 @@ class MapsController < ApplicationController
     @marker = Marker.new
     @markers = Marker.where(map_id: @map)
     gon.info = Map.info(@map)
+    @marker_clicked = false
   end
 
   def create
@@ -49,4 +50,6 @@ class MapsController < ApplicationController
   def map_params
     params.require(:map).permit(:title, :raw_address, :latitude, :longitude)
   end
+
+
 end
