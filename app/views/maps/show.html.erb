@@ -8,6 +8,7 @@
 </div>
 
 <div id="map"></div>
+
 <div id="infoForm">
     <textarea id="info"></textarea><br>
   <%= link_to edit_map_marker_path(@map, @markers), remote: true  do |f| %>
@@ -15,10 +16,11 @@
   <%end%>
 </div>
 
+
 <table id="markers">
 <%= render @map.markers %>
 </table>
 
-<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+  </script>

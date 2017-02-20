@@ -15,7 +15,6 @@ class MarkersController < ApplicationController
   # GET /markers/1.json
   def show
     @map = Map.find(params[:map_id])
-    @marker = Marker.find(params[:id])
   end
 
   # GET /markers/new
@@ -27,9 +26,12 @@ class MarkersController < ApplicationController
 
   # GET /markers/1/edit
   def edit
+<<<<<<< HEAD
     @map = Map.find(params[:map_id])
     @marker = Marker.find(params[:id])
     @info = @marker.info
+=======
+>>>>>>> parent of 6fbf4ea... not working
   end
 
   # POST /markers
@@ -54,8 +56,15 @@ class MarkersController < ApplicationController
   # PATCH/PUT /markers/1
   # PATCH/PUT /markers/1.json
   def update
-    @map = Map.find(params[:map_id])
-    @marker.update_attributes(marker_params)
+    respond_to do |format|
+      if @marker.update_attributes(marker_params)
+        format.html { redirect_to @marker, notice: 'Marker was successfully updated.' }
+        format.json { render :show, status: :ok, location: @marker }
+      else
+        format.html { render :edit }
+        format.json { render json: @marker.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /markers/1
