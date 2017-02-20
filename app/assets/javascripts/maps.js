@@ -14,10 +14,9 @@ function initialize() {
 	};
 
 	var map = new google.maps.Map(document.getElementById('map'), myOptions);
-	var infowindow = new InfoBubble({
-	 	maxWidth: 300
-  });
-
+	// var infowindow = new InfoBubble({
+	// 	maxWidth: 300
+ //   });
 	//auto complete / bias autocomplete to current maps bounds
 	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
 	var form = document.getElementById('form');
@@ -250,4 +249,4 @@ function initialize() {
 		});
 	};
 }
-document.onload = initialize();
+//document.onload = initialize();
