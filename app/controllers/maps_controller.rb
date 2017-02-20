@@ -16,9 +16,7 @@ class MapsController < ApplicationController
     gon.lat = @map.latitude
     gon.lng = @map.longitude
     @marker = Marker.new
-    @mark = Marker.find()
     @markers = Marker.where(map_id: @map)
-    #@markers = @map.markers
     gon.info = Map.info(@map)
   end
 
@@ -49,6 +47,6 @@ class MapsController < ApplicationController
   private
 
   def map_params
-    params.require(:map).permit(:title, :raw_address, :latitude, :longitude, markers_attributes: [:id])
+    params.require(:map).permit(:title, :raw_address, :latitude, :longitude)
   end
 end

@@ -229,16 +229,16 @@ function initialize() {
 				addInfo = document.getElementById('infoBtn');
 				iTxt.value = placeInfo.info;
 
-		// addInfo.onclick = function () {
-		// 	var firstInfo = placeInfo.info,
-		// 	newPlaceInfo = iTxt.value;
-		// 	content = content.toString();
-		// 	content = content.replace(firstInfo, newPlaceInfo);
-		// 	iWindow.updateTab(0, placeInfo.name, content);
-		// 	$.post('maps/:map_id/markers/:marker_id/edit', {info: newPlaceInfo}, function(data, textStatus, xhr) {
-		// 		/*optional stuff to do after success */
-		// 	});
-		// }
+		addInfo.onclick = function () {
+			var firstInfo = placeInfo.info,
+			newPlaceInfo = iTxt.value;
+			content = content.toString();
+			content = content.replace(firstInfo, newPlaceInfo);
+			iWindow.updateTab(0, placeInfo.name, content);
+			$.post('maps/:map_id/markers/:marker_id/edit', {info: newPlaceInfo}, function(data, textStatus, xhr) {
+				/*optional stuff to do after success */
+			});
+		}
 
 		iWindow.addTab('Form', iForm);	
 	}
