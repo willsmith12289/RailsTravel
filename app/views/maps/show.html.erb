@@ -9,6 +9,10 @@
 
 <div id="map"></div>
 
+<div id="infoForm">
+  <%= link_to edit_map_marker_path(@map, @markers.ids), remote: true %>
+</div>
+
 <table id="markers">
 <%= render(@map.markers) %>
 </table>

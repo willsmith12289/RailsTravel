@@ -214,17 +214,17 @@ function initialize() {
 		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
 			return placeInfo[prop] || "";
 		});
-		this.infowindow.addTab('Basic', content)
+		this.infowindow.addTab(placeInfo.name, content)
 		customInfo(this.infowindow, this.info);
 		//infowindow.setContent(content);
 		this.infowindow.open(map, this);
 	}
 
-		function customInfo (iWindow, placeInfo, content) {
-		var iForm = document.getElementById('infoForm'),
-				iTxt = document.getElementById('info'),
-				addInfo = document.getElementById('infoBtn');
-				iTxt.value = placeInfo.info;
+	function customInfo (iWindow, placeInfo, content) {
+		var iForm = document.getElementById('infoForm');
+		// 		iTxt = document.getElementById('info'),
+		// 		addInfo = document.getElementById('infoBtn');
+		// 		iTxt.value = placeInfo.info;
 
 		// addInfo.onclick = function () {
 		// 	var firstInfo = placeInfo.info,
@@ -238,11 +238,6 @@ function initialize() {
 		// }
 
 		iWindow.addTab('Form', iForm);	
-	function customInfo (iWindow, info) {
-		var customInfo = info,
-				infoTab = iWindow;
-		infoTab.addTab('Form', "hello");
-		
 	}
 	window.onload = function() {
 		var markerCluster = new MarkerClusterer(map, markers, {
