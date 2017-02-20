@@ -1,6 +1,7 @@
 class Map < ActiveRecord::Base
   attr_accessor :raw_address
-  has_many :markers
+  has_many :map_markers
+  has_many :markers, :through => :map_markers
   belongs_to :user
   accepts_nested_attributes_for :markers
 

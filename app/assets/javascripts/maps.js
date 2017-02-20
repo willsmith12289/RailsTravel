@@ -249,4 +249,4 @@ function initialize() {
 		});
 	};
 }
-document.onload = initialize();
+//document.onload = initialize();
