@@ -18,7 +18,7 @@ class MarkersController < ApplicationController
 
   # GET /markers/new
   def new
-    @map = Map.find(params[:map_id])
+    #@map = Map.find(params[:map_id])
     @marker = Marker.new
    # @map = params[:map_id]
   end
@@ -38,7 +38,7 @@ class MarkersController < ApplicationController
       if @marker.save
         format.html { redirect_to map_url }
         format.js
-        format.json { render action: 'show', status: :created, location: @marker }
+        format.json { render action: 'show', status: :created, location: @markers }
       else
         format.html { render action: 'new' }
         format.json { render json: @marker.errors, status: :unprocessable_entity }
@@ -49,9 +49,10 @@ class MarkersController < ApplicationController
   # PATCH/PUT /markers/1
   # PATCH/PUT /markers/1.json
   def update
+    @map = Map.find(params[:map_id])
     respond_to do |format|
-      if @marker.update(marker_params)
-        format.html { redirect_to @marker, notice: 'Marker was successfully updated.' }
+      if @marker.update_attributes(marker_params)
+        format.html { redirect_to @map, notice: 'Marker was successfully updated.' }
         format.json { render :show, status: :ok, location: @marker }
       else
         format.html { render :edit }
@@ -83,6 +84,6 @@ class MarkersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def marker_params
-      params.require(:marker).permit(:id, :title, :raw_address, :latitude, :longitude, :info, :map_id, :place_id)
+      params.require(:marker).permit(:title, :raw_address, :latitude, :longitude, :info, :map_id, :place_id)
     end
 end

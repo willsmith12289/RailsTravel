@@ -35,5 +35,5 @@
   <%= @marker.place_id %>
 </p>
 
-<%= link_to 'Edit', edit_map_marker_path(@marker, @marker.map_id) %>
+<%= link_to 'Edit', edit_map_marker_path(@marker.map_id, @marker) %>
 <%= link_to 'Show Markers', map_markers_path %>
