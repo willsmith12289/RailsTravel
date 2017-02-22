@@ -1,7 +1,10 @@
 <section>
 <h1><%= @map.title %></h1>
 <h3><%= @map.user.email %></h3>
+<h3>  <%= link_to "Show Markers", controller: "markers", action: "index", map_id: @map%></h3>
 </section>
+<div>
+</div>
 
 <div id="form">
   <%= render 'markers/form' %>
@@ -10,11 +13,9 @@
 <div id="map"></div>
 
 <div id="infoForm" >
-  <%= link_to edit_marker_path(@markers.ids), remote: true %>
-    <%= render 'markers/edit_form' %>
-</div>
 
-<table id="markers">
+</div>
+<table id="markers" style="display: none">
 <%= render(@map.markers) %>
 </table>
 
