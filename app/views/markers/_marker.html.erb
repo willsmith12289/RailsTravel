@@ -21,9 +21,12 @@
     <%=marker.place_id %>
   </td>
   <td>
-    <%= link_to 'Show', map_marker_path(@map, marker) %>
+    <%= link_to 'Show', marker_path(marker.id) %>
   </td>
   <td>
-    <%= link_to 'Destroy', map_marker_path(@map, marker), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Destroy', marker_path(marker), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+  <td class="place">
+    <%=marker.id %>
   </td>
 </tr>

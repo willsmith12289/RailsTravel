@@ -24,5 +24,10 @@ class Map < ActiveRecord::Base
     info = Marker.where("map_id = ?", map_id).pluck(:info)
     info
   end
+
+  def self.marker_id(map_id)
+    marker_id = Marker.where("map_id = ?", map_id).pluck(:id)
+    marker_id
+  end
   
 end
