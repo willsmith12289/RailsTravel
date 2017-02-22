@@ -25,6 +25,7 @@ class MarkersController < ApplicationController
 
   # GET /markers/1/edit
   def edit
+    @map = Map.find(params[:map_id])
   end
 
   # POST /markers
@@ -50,10 +51,12 @@ class MarkersController < ApplicationController
   # PATCH/PUT /markers/1.json
   def update
     @map = Map.find(params[:map_id])
+    @markers = Marker.where(map_id: @map)
     respond_to do |format|
       if @marker.update_attributes(marker_params)
-        format.html { redirect_to @map, notice: 'Marker was successfully updated.' }
-        format.json { render :show, status: :ok, location: @marker }
+        format.html { redirect_to map_url, notice: 'Marker was successfully updated.' }
+        format.js
+        format.json { render :show, status: :ok, location: @markers }
       else
         format.html { render :edit }
         format.json { render json: @marker.errors, status: :unprocessable_entity }
@@ -64,11 +67,13 @@ class MarkersController < ApplicationController
   # DELETE /markers/1
   # DELETE /markers/1.json
   def destroy
-    @marker.destroy
+    @map = Map.find(@marker.map_id)
     respond_to do |format|
-      format.html { redirect_to map_url(params[:map_id]), notice: 'Marker was successfully destroyed.' }
-      #format.js
-      # format.json { render action: 'show', status: :created, location: @marker }
+      if @marker.destroy
+        format.html { redirect_to map_path(@map), notice: 'Marker was successfully destroyed.' }
+      else
+        format.html { redirect_to map_url, notice: 'Marker was Not successfully destroyed.' }
+      end
     end
   end
 

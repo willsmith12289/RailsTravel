@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   }
 
   resources :maps do
-    resources :markers
+    resources :markers, shallow: true
   end
   root 'maps#index'
   # The priority is based upon order of creation: first created -> highest priority.
