@@ -100,10 +100,15 @@ function initialize() {
 
 	/*
 	 * assigns icon, creates marker, makes getDetails request and calls
-	 * formatInfoWindow() Pushes marker to markers array for use in      * marker clusterer
+	 * formatInfoWindow() Pushes marker to markers array
 	 */
 
 	function addMarker(place) {
+		var len = markers.length;
+		var infos = gon.info,
+				info = infos[len];
+		var ids = gon.markerId,
+				id = ids[len];
 		var icon = {
 			url: place.icon,
 			size: new google.maps.Size(71, 71),
@@ -115,12 +120,19 @@ function initialize() {
 			map: map,
 			icon: icon,
 			title: place.name,
-			position: place.geometry.location
+			position: place.geometry.location,
+			info: info,
+			id: id
 		});
 		markers.push(marker);
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
+		
+		// marker.info = infos[len];
+		// marker.id = ids[len];
+		
+
 		// var infos = gon.info,
 		// 		placeIds = gon.place_id,
 		// 		ids = gon.markerId;
@@ -155,19 +167,18 @@ function initialize() {
 		});
 	};
 
-console.log(markers);
+	// function assignInfo() {
+	// 			var infos = gon.info,
+	// 			ids = gon.markerId;
+	// 	markers.forEach(function(marker, index, markers) {
+	// 		marker.info = infos[index];
+	// 		marker.id = ids[index];
+	// 	});
+	// }
 	/*
-	 * Gets returned details and assigns them to infowindow content
+	 * Gets returned details and assigns them to infowindow content w/ try/catch
 	 */
 	function formatInfoWindow(place) {
-		var infos = gon.info,
-				placeIds = gon.place_id,
-				ids = gon.markerId;
-		markers.forEach(function(marker, index, markers) {
-			marker.info = infos[index];
-			marker.id = ids[index];
-			marker.placeId = placeIds[index];
-		});
 		console.log(this.info);
 		try {
 			var placeInfo = {
@@ -241,14 +252,18 @@ console.log(markers);
 		}
 		//replaces var between ##'s with property of placeInfo object, or empty string
 		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
-			return placeInfo[prop] || "";
+			return placeInfo[prop];
 		});
-		this.infowindow.addTab(placeInfo.name, content)
+		this.infowindow.addTab(placeInfo.name, content);
+		this.infowindow.open(map, this);
 		customInfo(this.infowindow, this.info, this.id, placeInfo.name);
 		//infowindow.setContent(content);
-		this.infowindow.open(map, this);
+		
 	}
 
+	/*
+	*Creates infobubble tab with marker update form in it
+	*/
 	function customInfo(iWindow, info, id, name) {
 		var iForm = document.getElementById('infoForm');
 		iForm.innerHTML =
@@ -259,7 +274,6 @@ console.log(markers);
 			"</form>"; 
 
 			iWindow.addTab('Form', iForm);
-
 	};
 
 
