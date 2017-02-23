@@ -20,6 +20,7 @@ class MapsController < ApplicationController
     gon.info = Map.info(@map)
     @mark = Marker.marker_id(@map)
     gon.markerId = Marker.marker_id(@map)
+    gon.place_id = Marker.place_id(@map)
 
   end
 

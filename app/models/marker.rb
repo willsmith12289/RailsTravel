@@ -17,5 +17,11 @@ attr_accessor :raw_address
     marker_id = Marker.where("map_id = ?", map_id).pluck(:id)
     marker_id
   end
+
+  def self.place_id(map_id)
+    place_id = Marker.where("map_id = ?", map_id).pluck(:place_id)
+    place_id
+  end
+ 
  
 end

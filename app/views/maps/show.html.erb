@@ -14,12 +14,6 @@
 <div id="map"></div>
 
 <div id="infoForm" >
-  <form action="/markers" method="patch">
-    <p><input type="hidden" name="hiddenId" value="id"></p>
-    <p><input type="text" name="txtTitle" value="place.name"></p>
-    <p><textarea>info</textarea></p>
-    <p><input type="submit" value="Update"></p>
-  </form>
 </div>
 <table id="markers" style="display: none">
 <%= render(@map.markers) %>

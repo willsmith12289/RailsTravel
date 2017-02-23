@@ -41,11 +41,12 @@ function initialize() {
 	 * grab correct place_id and info from marker model
 	 */
 	document.addEventListener("DOMContentLoaded", function() {
+		var placeIds = gon.place_id;
 		var tRows = document.getElementsByTagName('tr');
 		for (var i = 0; i < tRows.length; i++) {
-			var placeId = tRows[i].cells[6].textContent;
-			placeId = placeId.toString();
-			placeId = placeId.trim();
+			var placeId = placeIds[i];
+			//placeId = placeId.toString();
+			//placeId = placeId.trim();
 			getPlaceFromId(placeId);
 		};
 	});
@@ -92,7 +93,8 @@ function initialize() {
 			}
 			var placeId = place.place_id;
 		});
-		// map.fitBounds(bounds);
+
+		map.fitBounds(bounds);
 	};
 
 
@@ -119,14 +121,28 @@ function initialize() {
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
-		var infos = gon.info;
-		marker.info,
-			ids = gon.markerId,
-			marker.id;
-		for (var i = 0; i < markers.length; i++) {
-			marker.info = infos[i];
-			marker.id = ids[i];
-		}
+		// var infos = gon.info,
+		// 		placeIds = gon.place_id,
+		// 		ids = gon.markerId;
+		// marker.info = infos[markers.length];
+		// marker.id = ids[markers.length];
+		// marker.placeId = placeIds[markers.length];
+
+		// markers.forEach(function(marker, index, markers) {
+		// 	marker.info = infos[index];
+		// 	marker.id = ids[index];
+		// 	marker.placeId = placeIds[index];
+		// });
+		// addInfoId;
+		// var infos = gon.info;
+		// marker.info,
+		// 	ids = gon.markerId,
+		// 	marker.id;
+		// console.log(markers.length);
+		// for (var i = markers.length; i <= markers.length; i--) {
+		// 	marker.info = infos[i];
+		// 	marker.id = ids[i];
+		// }
 		//console.log(place);
 		var service = new google.maps.places.PlacesService(map);
 
@@ -139,11 +155,20 @@ function initialize() {
 		});
 	};
 
-
+console.log(markers);
 	/*
 	 * Gets returned details and assigns them to infowindow content
 	 */
 	function formatInfoWindow(place) {
+		var infos = gon.info,
+				placeIds = gon.place_id,
+				ids = gon.markerId;
+		markers.forEach(function(marker, index, markers) {
+			marker.info = infos[index];
+			marker.id = ids[index];
+			marker.placeId = placeIds[index];
+		});
+		console.log(this.info);
 		try {
 			var placeInfo = {
 				name: place.name,
@@ -214,8 +239,6 @@ function initialize() {
 					'</div>';
 			}
 		}
-
-
 		//replaces var between ##'s with property of placeInfo object, or empty string
 		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
 			return placeInfo[prop] || "";
@@ -230,26 +253,10 @@ function initialize() {
 		var iForm = document.getElementById('infoForm');
 		iForm.innerHTML =
 			"<form action='/markers/" + id + "' method='patch'>" +
-			// "<p><input type='hidden' name='hiddenId' value='" + id + "'></p>" +
-			"<p>" + name + "</p>" +
-			"<p><textarea name='marker[info]'' id='marker_info'>" + info + "</textarea></p>" +
-			"<p><input type='submit' value='Update'></p>" +
+				"<p>" + name + "</p>" +
+				"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
+				"<p><input type='submit' value='Update'></p>" +
 			"</form>"; 
-
-			// 		iTxt = document.getElementById('info'),
-			// 		addInfo = document.getElementById('infoBtn');
-			// 		iTxt.value = placeInfo.info;
-
-			// addInfo.onclick = function () {
-			// 	var firstInfo = placeInfo.info,
-			// 	newPlaceInfo = iTxt.value;
-			// 	content = content.toString();
-			// 	content = content.replace(firstInfo, newPlaceInfo);
-			// 	iWindow.updateTab(0, placeInfo.name, content);
-			// 	$.post('maps/:map_id/markers/:marker_id/edit', {info: newPlaceInfo}, function(data, textStatus, xhr) {
-			// 		/*optional stuff to do after success */
-			// 	});
-			// }
 
 			iWindow.addTab('Form', iForm);
 
@@ -261,8 +268,4 @@ function initialize() {
 			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
 		});
 	};
-}
-
-function getMarkerId() {
-
 }
