@@ -13,6 +13,9 @@ attr_accessor :raw_address
 
   after_validation :reverse_geocode, unless: ->(obj) { obj.raw_address.present? },
                    if: ->(obj){ obj.latitude.present? and obj.latitude_changed? and obj.longitude.present? and obj.longitude_changed? }
-
+  def self.marker_id(map_id)
+    marker_id = Marker.where("map_id = ?", map_id).pluck(:id)
+    marker_id
+  end
  
 end
