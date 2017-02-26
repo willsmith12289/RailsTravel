@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'model/Calendar'
+
+  get 'calendar/index'
+
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
@@ -7,7 +11,11 @@ Rails.application.routes.draw do
   resources :maps do
     resources :markers, shallow: true
   end
-  
+
+  get '/redirect', to: 'calendar#redirect', as: 'redirect'
+  get '/callback', to: 'calendar#callback', as: 'callback'
+  get '/calendars', to: 'calendar#index', as: 'calendar'
+  get '/calendar/new', to: 'calendar#new', as: 'new'
   root 'maps#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

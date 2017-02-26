@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
 gem 'devise'
 gem 'geocoder'
 gem 'gon'

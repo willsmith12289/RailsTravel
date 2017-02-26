@@ -1,0 +1,11 @@
+<%= form_for @calender do %>
+ <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :raw_address, 'Address' %>
+    <%= f.text_field :raw_address %>
+  </div>
+  <%= f.submit 'Add!', class: 'btn btn-primary' %>
+<% end -%>
