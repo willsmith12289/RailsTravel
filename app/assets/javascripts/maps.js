@@ -3,6 +3,7 @@ var markers = [];
 function initialize() {
 	var lat = parseFloat(gon.lat),
 			lng = parseFloat(gon.lng);
+			
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		center: {
@@ -130,34 +131,7 @@ function initialize() {
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
-		
-		// marker.info = infos[len];
-		// marker.id = ids[len];
-		
 
-		// var infos = gon.info,
-		// 		placeIds = gon.place_id,
-		// 		ids = gon.markerId;
-		// marker.info = infos[markers.length];
-		// marker.id = ids[markers.length];
-		// marker.placeId = placeIds[markers.length];
-
-		// markers.forEach(function(marker, index, markers) {
-		// 	marker.info = infos[index];
-		// 	marker.id = ids[index];
-		// 	marker.placeId = placeIds[index];
-		// });
-		// addInfoId;
-		// var infos = gon.info;
-		// marker.info,
-		// 	ids = gon.markerId,
-		// 	marker.id;
-		// console.log(markers.length);
-		// for (var i = markers.length; i <= markers.length; i--) {
-		// 	marker.info = infos[i];
-		// 	marker.id = ids[i];
-		// }
-		//console.log(place);
 		var service = new google.maps.places.PlacesService(map);
 
 		service.getDetails({
@@ -171,10 +145,10 @@ function initialize() {
 
 
 	/*
-	 * Creates infowindow template, and assigns placeInfo based on 
-	 * returned GetDetails request.  Replaces #variable# in template
-	 * w/ corresponding placeInfo variable. Opens infowindow w/
-	 * specified content and then calls editInfo to add tab w/ edit form
+	 * Creates infowindow template based on returned GetDetails request
+	 * Replaces #variable# in template w/ corresponding placeInfo[prop]
+	 * Opens infowindow w/ specified content
+	 * calls editInfo to add tab w/ edit form
 	 */
 	function formatInfoWindow(place) {
 		var infos = gon.info,
