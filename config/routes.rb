@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :calendars
+  resources :trips
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
