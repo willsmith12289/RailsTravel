@@ -92,24 +92,23 @@ function initialize() {
 			}
 
 			if (place.geometry.viewport) {
-			// 	// Only geocodes have viewport.
-			// 	bounds.union(place.geometry.viewport);
-			// } else {
-			// 	bounds.extend(place.geometry.location);
-			// }
-			// var placeId = place.place_id;
+				// Only geocodes have viewport.
+				bounds.union(place.geometry.viewport);
+			} else {
+				bounds.extend(place.geometry.location);
+			}
+			var placeId = place.place_id;
 					// Create a marker for each place.
 			addMarker(place);
-			}
-		});
-
-		// map.fitBounds(bounds);
+			});
+		map.fitBounds(bounds);
 	};
 
 
 	/*
-	 * assigns icon, info, and rb id; creates marker pushes to markers  * array; makes Getdetails request from google places api and binds
-	 * formatInfoWindow() to the created marker(this = this.marker)
+	 * assigns icon; creates marker pushes to markers array; 
+	 * makes Getdetails request from places api
+	 * binds formatInfoWindow() to the marker(this = this.marker)
 	 */
 	function addMarker(place) {
 		
