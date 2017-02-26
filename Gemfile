@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem "simple_calendar", "~> 2.0"
 gem 'devise'
 gem 'geocoder'
 gem 'gon'
