@@ -1,12 +1,13 @@
 var markers = [];
 
 function initialize() {
-
+	var lat = parseFloat(gon.lat),
+			lng = parseFloat(gon.lng);
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		center: {
-			lat: gon.lat,
-			lng: gon.lng
+			lat: lat,
+			lng: lng
 		},
 		zoom: 12,
 		scrollwheel: false,
@@ -26,7 +27,9 @@ function initialize() {
 
 
 	/*
-	 *  when address in autocomplete is selected place_id is posted to Marker
+	 *  when address in autocomplete is selected place_id is posted
+	 *  to Marker.
+	 *	Adds place_id to hidden form field before posted to marker model
 	 */
 	addressInput.addListener('places_changed', function() {
 		var places = addressInput.getPlaces();
@@ -38,7 +41,9 @@ function initialize() {
 
 
 	/*
-	 * grab correct place_id and info from marker model
+	 * passes place_id from exisiting marker models to getPlaceFromId
+	 * traverses hidden table and assigns place_id to the corresponding
+	 * markers row
 	 */
 	document.addEventListener("DOMContentLoaded", function() {
 		var placeIds = gon.place_id;
@@ -53,7 +58,10 @@ function initialize() {
 
 
 	/*
-	 * Make place service request on place_id passed from dom event listener
+	 * This function adds existing markers to map
+	 * gets google place object through place service request with
+	 * place_id's from above;
+	 * Calls addMarker on returned place.
 	 */
 	function getPlaceFromId(place) {
 		var request = {
@@ -71,44 +79,40 @@ function initialize() {
 
 
 	/*
-	 * get place on form submit and call createMarker on place
+	 * This function adds new markers from form to map
+	 * Auto completes addressInput on form; then gets place on form    * submit. Passes place to createMarker.
 	 */
 	function autoComplete() {
 		var Gplace = addressInput.getPlaces();
-
-		// For each place, get the icon, name and location.
 		var bounds = new google.maps.LatLngBounds();
 		Gplace.forEach(function(place) {
 			if (!place.geometry) {
 				console.log("Returned place contains no geometry");
 				return;
 			}
-			// Create a marker for each place.
-			addMarker(place);
+
 			if (place.geometry.viewport) {
-				// Only geocodes have viewport.
-				bounds.union(place.geometry.viewport);
-			} else {
-				bounds.extend(place.geometry.location);
+			// 	// Only geocodes have viewport.
+			// 	bounds.union(place.geometry.viewport);
+			// } else {
+			// 	bounds.extend(place.geometry.location);
+			// }
+			// var placeId = place.place_id;
+					// Create a marker for each place.
+			addMarker(place);
 			}
-			var placeId = place.place_id;
 		});
 
-		map.fitBounds(bounds);
+		// map.fitBounds(bounds);
 	};
 
 
 	/*
-	 * assigns icon, creates marker, makes getDetails request and calls
-	 * formatInfoWindow() Pushes marker to markers array
+	 * assigns icon, info, and rb id; creates marker pushes to markers  * array; makes Getdetails request from google places api and binds
+	 * formatInfoWindow() to the created marker(this = this.marker)
 	 */
-
 	function addMarker(place) {
-		var len = markers.length;
-		var infos = gon.info,
-				info = infos[len];
-		var ids = gon.markerId,
-				id = ids[len];
+		
 		var icon = {
 			url: place.icon,
 			size: new google.maps.Size(71, 71),
@@ -120,9 +124,9 @@ function initialize() {
 			map: map,
 			icon: icon,
 			title: place.name,
-			position: place.geometry.location,
-			info: info,
-			id: id
+			position: place.geometry.location
+			//info: info,
+			//id: id
 		});
 		markers.push(marker);
 		marker.infowindow = new InfoBubble({
@@ -167,19 +171,23 @@ function initialize() {
 		});
 	};
 
-	// function assignInfo() {
-	// 			var infos = gon.info,
-	// 			ids = gon.markerId;
-	// 	markers.forEach(function(marker, index, markers) {
-	// 		marker.info = infos[index];
-	// 		marker.id = ids[index];
-	// 	});
-	// }
+
 	/*
-	 * Gets returned details and assigns them to infowindow content w/ try/catch
+	 * Creates infowindow template, and assigns placeInfo based on 
+	 * returned GetDetails request.  Replaces #variable# in template
+	 * w/ corresponding placeInfo variable. Opens infowindow w/
+	 * specified content and then calls editInfo to add tab w/ edit form
 	 */
 	function formatInfoWindow(place) {
-		console.log(this.info);
+		var infos = gon.info,
+				ids = gon.markerId,
+				pIDs = gon.place_id;
+		pIDs.forEach(function(pID, i) {
+			if (place.place_id === pID) {
+				this.info = infos[i];
+				this.id = ids[i];
+			}
+		}, this)
 		try {
 			var placeInfo = {
 				name: place.name,
@@ -256,24 +264,27 @@ function initialize() {
 		});
 		this.infowindow.addTab(placeInfo.name, content);
 		this.infowindow.open(map, this);
-		customInfo(this.infowindow, this.info, this.id, placeInfo.name);
-		//infowindow.setContent(content);
-		
+		editInfo(this.infowindow, this.info, this.id, placeInfo.name);
 	}
+
 
 	/*
 	*Creates infobubble tab with marker update form in it
 	*/
-	function customInfo(iWindow, info, id, name) {
+	function editInfo(iWindow, info, id, name) {
 		var iForm = document.getElementById('infoForm');
 		iForm.innerHTML =
 			"<form action='/markers/" + id + "' method='patch'>" +
 				"<p>" + name + "</p>" +
 				"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 				"<p><input type='submit' value='Update'></p>" +
-			"</form>"; 
-
+			"</form>";
 			iWindow.addTab('Form', iForm);
+			if(this.clicked == true) {
+				iForm.style.display = 'inherit';
+			} else {
+				iForm.style.display = 'hidden';
+			}
 	};
 
 
