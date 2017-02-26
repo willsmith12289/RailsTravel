@@ -124,9 +124,8 @@ function initialize() {
 			map: map,
 			icon: icon,
 			title: place.name,
-			position: place.geometry.location
-			//info: info,
-			//id: id
+			position: place.geometry.location,
+			clicked: false
 		});
 		markers.push(marker);
 		marker.infowindow = new InfoBubble({
@@ -187,37 +186,11 @@ function initialize() {
 				this.info = infos[i];
 				this.id = ids[i];
 			}
-		}, this)
-		try {
-			var placeInfo = {
-				name: place.name,
-				open: place.opening_hours.open_now,
-				address: place.vicinity,
-				phoneI: place.international_phone_number,
-				phone: place.formatted_phone_number,
-				rating: place.rating,
-				reviewAuth: place.reviews[0].author_name,
-				reviewText: place.reviews[0].text,
-				reviewRate: place.reviews[0].rating,
-				website: place.website,
-				img: place.photos[0],
-				photo: img.getUrl(),
-				info: this.info,
-				id: this.id
-			}
-			var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-				'<address>##address##</address>' +
-				'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
-				'<p><a href="tel:##phoneI##">##phone##</a></p>' +
-				'<h3><b>Notes:</b></h3>' +
-				'<p>##info##</p>' +
-				'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
-				'<p>##reviewText##</p>' +
-				'<img src="##photo##"></img>' +
-				'</div>';
-		} catch (e) {
+		}, this);
+		if (this.clicked == false) {
+			this.clicked = true;
 			try {
-				placeInfo = {
+				var placeInfo = {
 					name: place.name,
 					open: place.opening_hours.open_now,
 					address: place.vicinity,
@@ -228,6 +201,8 @@ function initialize() {
 					reviewText: place.reviews[0].text,
 					reviewRate: place.reviews[0].rating,
 					website: place.website,
+					img: place.photos[0],
+					photo: img.getUrl(),
 					info: this.info,
 					id: this.id
 				}
@@ -239,32 +214,61 @@ function initialize() {
 					'<p>##info##</p>' +
 					'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
 					'<p>##reviewText##</p>' +
+					'<img src="##photo##"></img>' +
 					'</div>';
 			} catch (e) {
-				placeInfo = {
-					name: place.name,
-					address: place.vicinity,
-					phoneI: place.international_phone_number,
-					phone: place.formatted_phone_number,
-					rating: place.rating,
-					website: place.website,
-					info: this.info,
-					id: this.id
+				try {
+					placeInfo = {
+						name: place.name,
+						open: place.opening_hours.open_now,
+						address: place.vicinity,
+						phoneI: place.international_phone_number,
+						phone: place.formatted_phone_number,
+						rating: place.rating,
+						reviewAuth: place.reviews[0].author_name,
+						reviewText: place.reviews[0].text,
+						reviewRate: place.reviews[0].rating,
+						website: place.website,
+						info: this.info,
+						id: this.id
+					}
+					var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
+						'<address>##address##</address>' +
+						'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
+						'<p><a href="tel:##phoneI##">##phone##</a></p>' +
+						'<h3><b>Notes:</b></h3>' +
+						'<p>##info##</p>' +
+						'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
+						'<p>##reviewText##</p>' +
+						'</div>';
+				} catch (e) {
+					placeInfo = {
+						name: place.name,
+						address: place.vicinity,
+						phoneI: place.international_phone_number,
+						phone: place.formatted_phone_number,
+						rating: place.rating,
+						website: place.website,
+						info: this.info,
+						id: this.id
+					}
+					var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
+						'<address>##address##</address>' +
+						'<h3><b>Notes:</b></h3>' +
+						'<p>##info##</p>' +
+						'</div>';
 				}
-				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-					'<address>##address##</address>' +
-					'<h3><b>Notes:</b></h3>' +
-					'<p>##info##</p>' +
-					'</div>';
 			}
+			//replaces var between ##'s with property of placeInfo object, or empty string
+			var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
+				return placeInfo[prop];
+			});
+			this.infowindow.addTab(placeInfo.name, content);
+			this.infowindow.open(map, this);
+			editInfo(this.infowindow, this.info, this.id, placeInfo.name);
+		} else {
+			this.infowindow.open(map, this);
 		}
-		//replaces var between ##'s with property of placeInfo object, or empty string
-		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
-			return placeInfo[prop];
-		});
-		this.infowindow.addTab(placeInfo.name, content);
-		this.infowindow.open(map, this);
-		editInfo(this.infowindow, this.info, this.id, placeInfo.name);
 	}
 
 
