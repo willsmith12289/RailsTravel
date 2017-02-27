@@ -8,7 +8,7 @@
   <% events.each do |event| %>
     <div>
       <%= link_to event.name, event %>
-      <%= link_to 'Edit', edit_event_path(event) %>
+      <%= link_to 'Edit', edit_event_path(event, map_id: @map) %>
       <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %>
     </div>
   <% end %>

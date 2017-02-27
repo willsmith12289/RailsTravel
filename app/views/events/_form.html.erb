@@ -16,7 +16,7 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.text_field :map_id, value: @map %>
+    <%= f.hidden_field :map_id, value: @map %>
   </div>
   <div class="field">
     <p>Start Date: <%= @date %></p>

@@ -24,6 +24,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @map = params[:map_id]
   end
 
   # POST /events
