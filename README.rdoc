@@ -1,5 +1,3 @@
 == README
 
-try integrating wikimedia wikitravel api into infowindows
-
-put form for editing marker into infowindow, and ajax update to quickly change info
+add edit event form in marker
