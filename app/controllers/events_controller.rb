@@ -4,17 +4,22 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
+    @map = params[:map_id]
     @events = Event.all
+    @events = Event.where(map_id: @map)
   end
 
   # GET /events/1
-  # GET /events/1.json
+  # GET /events/1.json`
   def show
+    @map = params[:map_id]
   end
 
   # GET /events/new
   def new
+    @map = params[:map_id]
     @event = Event.new
+    @date = params[:date].to_date
   end
 
   # GET /events/1/edit
@@ -69,6 +74,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:name, :start_time, :end_time)
+      params.require(:event).permit(:name, :start_time, :end_time, :document, :map_id)
     end
 end
