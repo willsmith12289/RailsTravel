@@ -19,6 +19,7 @@ class MapsController < ApplicationController
     @markers = Marker.where(map_id: @map)
     gon.info = Map.info(@map)
     @mark = Marker.marker_id(@map)
+    gon.map_id = params[:id]
     gon.markerId = Marker.marker_id(@map)
     gon.place_id = Marker.place_id(@map)
 
