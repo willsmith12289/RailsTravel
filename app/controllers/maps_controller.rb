@@ -22,7 +22,7 @@ class MapsController < ApplicationController
     gon.map_id = params[:id]
     gon.markerId = Marker.marker_id(@map)
     gon.place_id = Marker.place_id(@map)
-
+    gon.marker = params[:marker_id]
   end
 
   def create

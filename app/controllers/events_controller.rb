@@ -6,6 +6,7 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     @map = params[:map_id]
+    @marker = params[:marker_id]
     @events = Event.all
     @events = Event.where(map_id: @map)
   end
@@ -19,12 +20,14 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @map = params[:map_id]
+    @marker = params[:marker_id]
     @event = Event.new
     @date = params[:date].to_date
   end
 
   # GET /events/1/edit
   def edit
+    @marker = params[:marker_id]
     @map = params[:map_id]
   end
 
@@ -77,6 +80,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:name, :start_time, :end_time, :document, :map_id)
+      params.require(:event).permit(:name, :start_time, :end_time, :document, :map_id, :marker_id)
     end
 end

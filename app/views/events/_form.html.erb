@@ -19,6 +19,9 @@
     <%= f.hidden_field :map_id, value: @map %>
   </div>
   <div class="field">
+    <%= f.hidden_field :marker_id, value: @marker %>
+  </div>
+  <div class="field">
     <p>Start Date: <%= @date %></p>
     <%= f.date_select :start_time, default: @date %>
   </div>

@@ -16,6 +16,11 @@
 </p>
 
 <p>
+  <strong>Marker ID:</strong>
+  <%= @event.marker_id %>
+</p>
+
+<p>
   <strong>End time:</strong>
   <%= @event.end_time %>
 </p>
@@ -24,6 +29,6 @@
   <strong>Document:</strong>
   <%= link_to 'Document', @event.document.url %>
 </p>
-
+<%= link_to 'Show on Map', map_path(@event.map_id, marker_id: @event.marker_id) %> |
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', map_events_path(@event.map_id, @map) %>
