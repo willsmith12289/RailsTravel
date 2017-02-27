@@ -1,8 +1,8 @@
 <section>
 <h1><%= @map.title %></h1>
-<h3><%= @map.user.email %></h3>
+<h3><%= link_to "Back To Maps", maps_path %></h3>
 <h3>  <%= link_to "Show Markers", controller: "markers", action: "index", map_id: @map%></h3>
-<h3><%= @mark %></h3>
+
 </section>
 <div>
 </div>

@@ -1,6 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Calendar <%= @map %></h1>
+<h1>Calendar</h1>
+<h3><%= link_to "My Maps", maps_path %></h3>
+<table>
+  <% @events.each do |event| %>
+    <tr>
+      <td>
+        <%= link_to event.name, event %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 
 <%= month_calendar events: @events do |date, events| %>
   <%= date %>
@@ -15,5 +28,3 @@
   <%= link_to 'Add Event', new_event_path(date: date, map_id: @map)%>
 <% end %>
 <br>
-
-
