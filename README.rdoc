@@ -1,5 +1,3 @@
 == README
 
-add edit event form in marker
-
-http://fiddle.jshell.net/upsidown/PWsVH/
+create one infobubble that opens over given marker

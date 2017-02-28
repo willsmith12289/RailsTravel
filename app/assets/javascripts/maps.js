@@ -18,6 +18,8 @@ function initialize() {
 	var mapCanvas = document.getElementById('map');
 	var map = new google.maps.Map(mapCanvas, myOptions);
 	var placeInput = document.getElementById('marker_place_id');
+	var calForm = document.getElementById('calForm');
+	var iForm = document.getElementById('infoForm');
 	//auto complete / bias autocomplete to current maps bounds
 	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
 	var form = document.getElementById('form'),
@@ -65,7 +67,7 @@ function initialize() {
 				j++;
 				getPlaceFromId(placeId);
 			}
-		}, 1000);
+		}, 100);
 		// for (var i = 0; i < tRows.length; i++) {
 		// 	var placeId = placeIds[i];
 		// 	console.log(placeId);
@@ -98,11 +100,11 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				setInterval(addMarker(place), 500);
+				setInterval(addMarker(place), 100);
 			} else {
 				setTimeout(function() {
 					service.getDetails(request, callback);
-				}, 1000)
+				}, 500)
 
 			}
 		}
@@ -268,10 +270,12 @@ function initialize() {
 		});
 
 		marker.infowindow.addTab(placeInfo.name, content);
-		google.maps.event.addListener(marker, 'click', function() {
-			editInfo(this, placeInfo.name);
-			this.infowindow.open(map, this);
+		document.onload = google.maps.event.addListener(marker, 'click', function() {
+			editInfo(marker, placeInfo.name);
+			addEvent(marker, marker.id);
+			marker.infowindow.open(map, marker);
 		});
+		
 	}
 
 
@@ -279,32 +283,33 @@ function initialize() {
 	 *Creates infobubble tab with marker update form in it
 	 */
 	function editInfo(marker, name) {
-		var iForm = document.getElementById('infoForm');
-
+		
+		var id = marker.id,
+				info = marker.info;
+				console.log(iForm);
 		iForm.innerHTML =
-			"<form action='/markers/" + marker.id + "/update' method='patch'>" +
+			"<form action='/markers/" + id + "/update' method='patch'>" +
 			"<p>" + name + "</p>" +
-			"<p><textarea name='marker[info]' id='marker_info'>" + marker.info + "</textarea></p>" +
+			"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 			"<p><input type='submit' value='Update'></p>" +
 			"</form>";
 		marker.infowindow.addTab('Edit Info', iForm);
-		if (this.clicked == true) {
-			iForm.style.display = 'inherit';
-			calForm.style.display = 'inherit';
+		if (marker.clicked == true) {
+			iForm.style.visibility = 'hidden';
+			marker.clicked = true
 		} else {
-			iForm.style.display = 'hidden';
-			calForm.style.display = 'hidden';
-		}
-		addEvent(marker.infowindow, marker.id);
+			iForm.style.visibility = 'visible';
+			marker.clicked = false;
+		};
 	};
 
 
-	function addEvent(iWindow, id) {
-		var calForm = document.getElementById('calForm'),
-			mapId = gon.map_id;
+	function addEvent(marker, id) {
+		
+		var mapId = gon.map_id;
+								console.log(calForm);
 		calForm.innerHTML =
 			"<form class='new_event' id='new_event' enctype='multipart/form-data' action='/events' method='post'>" +
-
 			"<div class='field'><label for='event_name'>Name:</label>" +
 			"<input type='text' name='event[name]' id='event_name'></div>" +
 
@@ -372,7 +377,6 @@ function initialize() {
 			"<option value='30'>30</option>" +
 			"<option value='31'>31</option>" +
 			"</select></div>" +
-
 			"<div class='field'><label for='event_end_time'>End Date:</label>" +
 			"<select id='event_end_time_1i' name='event[end_time(1i)]'>" +
 			"<option value='2017'>2017</option>" +
@@ -431,30 +435,19 @@ function initialize() {
 			"<option value='30'>30</option>" +
 			"<option value='31'>31</option>" +
 			"</select></div>" +
-
 			"<div class='field'><label for='event_document'>Document</label>" +
 			"<input type='file' name='event[document]' id='event_document'></div>" +
-
 			"<div class='actions'>" +
 			"<input type='submit' value='Create Event' name='commit'></div>" +
 			"</form>";
 
-		iWindow.addTab('Add Event', calForm);
+		marker.infowindow.addTab('Add Event', calForm);
+		if (marker.clicked === true) {
+			calForm.style.visibility = 'hidden';
+			marker.clicked = true
+		} else {
+			calForm.style.visibility = 'visible';
+			marker.clicked = false;
+		};
 	};
-
-}
-
-
-// window.onload = setPan(id);
-// console.log(markers)
-// function setPan(id) {
-
-// 	for (var i = 0; i < markers.length; i++) {
-// 		console.log(markers[i]);
-// 			if (markers[i].id = id) {
-// 		var place = markers[i].position;
-// 		map.panTo(place);
-// 		map.setZoom(8);
-// 	}
-// 	}
-// }
+};
