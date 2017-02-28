@@ -55,11 +55,11 @@ function initialize() {
 		//var tRows = document.getElementsByTagName('tr');
 		var j = 0
 		var interval = setInterval(function() {
-			console.log("j="+j);
+			console.log("j=" + j);
 			if (j >= placeIds.length) {
 				console.log("clear" + j);
 				clearInterval(interval);
-			}else {
+			} else {
 				var placeId = placeIds[j];
 				console.log("dom calling place from ids: " + j + placeId);
 				j++;
@@ -103,7 +103,7 @@ function initialize() {
 				setTimeout(function() {
 					service.getDetails(request, callback);
 				}, 1000)
-				
+
 			}
 		}
 	};
@@ -135,8 +135,8 @@ function initialize() {
 			console.log(placeId);
 			placeInput.value = placeId;
 			// Create a marker for each place.
-				addMarker(place);
-			
+			addMarker(place);
+
 
 		});
 		map.fitBounds(bounds);
@@ -168,45 +168,11 @@ function initialize() {
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
-		var i = 0;
-		var interval = setInterval(function() {
-			getDetails(place, marker);
-			i++;
-			if (i > markers.length) {
-				clearInterval(interval);
-				var markerCluster = new MarkerClusterer(map, markers, {
-					imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-				});
-			}
-		}, 500);
-		// var service = new google.maps.places.PlacesService(map);
-
-		// service.getDetails({
-		// 	placeId: place.place_id
-		// }, function(place, status) {
-		// 	if (status === google.maps.places.PlacesServiceStatus.OK) {
-		// 		google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
-		// 	}
-		// 	else {
-		// 		alert("addMarker:" + status);
-		// 	};
-		// });
-	};
-
-
-	function getDetails(place, marker) {
-		var service = new google.maps.places.PlacesService(map);
-
-		service.getDetails({
-			placeId: place.place_id
-		}, function(place, status) {
-			if (status === google.maps.places.PlacesServiceStatus.OK) {
-				google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
-			} else {
-				alert("addMarker:" + status);
-			};
+		var markerCluster = new MarkerClusterer(map, markers, {
+			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
 		});
-	}
+		formatInfoWindow(marker, place);
+	};
 
 	/*
 	 * Creates infowindow template based on returned GetDetails request
@@ -214,20 +180,48 @@ function initialize() {
 	 * Opens infowindow w/ specified content
 	 * calls editInfo to add tab w/ edit form
 	 */
-	function formatInfoWindow(place) {
+	function formatInfoWindow(marker, place) {
 		var infos = gon.info,
 			ids = gon.markerId,
 			pIDs = gon.place_id;
 		pIDs.forEach(function(pID, i) {
 			if (place.place_id === pID) {
-				this.info = infos[i];
-				this.id = ids[i];
+				marker.info = infos[i];
+				marker.id = ids[i];
 			}
-		}, this);
-		if (this.clicked == false) {
-			this.clicked = true;
+		}, marker);
+		// if (marker.clicked == false) {
+		// 	marker.clicked = true;
+		try {
+			var placeInfo = {
+				name: place.name,
+				open: place.opening_hours.open_now,
+				address: place.vicinity,
+				phoneI: place.international_phone_number,
+				phone: place.formatted_phone_number,
+				rating: place.rating,
+				reviewAuth: place.reviews[0].author_name,
+				reviewText: place.reviews[0].text,
+				reviewRate: place.reviews[0].rating,
+				website: place.website,
+				img: place.photos[0],
+				photo: img.getUrl(),
+				info: marker.info,
+				id: marker.id
+			}
+			var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
+				'<address>##address##</address>' +
+				'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
+				'<p><a href="tel:##phoneI##">##phone##</a></p>' +
+				'<h3><b>Notes:</b></h3>' +
+				'<p>##info##</p>' +
+				'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
+				'<p>##reviewText##</p>' +
+				'<img src="##photo##"></img>' +
+				'</div>';
+		} catch (e) {
 			try {
-				var placeInfo = {
+				placeInfo = {
 					name: place.name,
 					open: place.opening_hours.open_now,
 					address: place.vicinity,
@@ -238,10 +232,8 @@ function initialize() {
 					reviewText: place.reviews[0].text,
 					reviewRate: place.reviews[0].rating,
 					website: place.website,
-					img: place.photos[0],
-					photo: img.getUrl(),
-					info: this.info,
-					id: this.id
+					info: marker.info,
+					id: marker.id
 				}
 				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
 					'<address>##address##</address>' +
@@ -251,77 +243,51 @@ function initialize() {
 					'<p>##info##</p>' +
 					'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
 					'<p>##reviewText##</p>' +
-					'<img src="##photo##"></img>' +
 					'</div>';
 			} catch (e) {
-				try {
-					placeInfo = {
-						name: place.name,
-						open: place.opening_hours.open_now,
-						address: place.vicinity,
-						phoneI: place.international_phone_number,
-						phone: place.formatted_phone_number,
-						rating: place.rating,
-						reviewAuth: place.reviews[0].author_name,
-						reviewText: place.reviews[0].text,
-						reviewRate: place.reviews[0].rating,
-						website: place.website,
-						info: this.info,
-						id: this.id
-					}
-					var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-						'<address>##address##</address>' +
-						'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
-						'<p><a href="tel:##phoneI##">##phone##</a></p>' +
-						'<h3><b>Notes:</b></h3>' +
-						'<p>##info##</p>' +
-						'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
-						'<p>##reviewText##</p>' +
-						'</div>';
-				} catch (e) {
-					placeInfo = {
-						name: place.name,
-						address: place.vicinity,
-						phoneI: place.international_phone_number,
-						phone: place.formatted_phone_number,
-						rating: place.rating,
-						website: place.website,
-						info: this.info,
-						id: this.id
-					}
-					var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-						'<address>##address##</address>' +
-						'<h3><b>Notes:</b></h3>' +
-						'<p>##info##</p>' +
-						'</div>';
+				placeInfo = {
+					name: place.name,
+					address: place.vicinity,
+					phoneI: place.international_phone_number,
+					phone: place.formatted_phone_number,
+					rating: place.rating,
+					website: place.website,
+					info: marker.info,
+					id: marker.id
 				}
+				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
+					'<address>##address##</address>' +
+					'<h3><b>Notes:</b></h3>' +
+					'<p>##info##</p>' +
+					'</div>';
 			}
-			//replaces var between ##'s with property of placeInfo object, or empty string
-			var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
-				return placeInfo[prop];
-			});
-			this.infowindow.addTab(placeInfo.name, content);
-			this.infowindow.open(map, this);
-			editInfo(this.infowindow, this.info, this.id, placeInfo.name);
-		} else {
-			this.infowindow.open(map, this);
 		}
+		//replaces var between ##'s with property of placeInfo object, or empty string
+		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
+			return placeInfo[prop];
+		});
+
+		marker.infowindow.addTab(placeInfo.name, content);
+		google.maps.event.addListener(marker, 'click', function() {
+			editInfo(this, placeInfo.name);
+			this.infowindow.open(map, this);
+		});
 	}
 
 
 	/*
 	 *Creates infobubble tab with marker update form in it
 	 */
-	function editInfo(iWindow, info, id, name) {
+	function editInfo(marker, name) {
 		var iForm = document.getElementById('infoForm');
 
 		iForm.innerHTML =
-			"<form action='/markers/" + id + "/update' method='patch'>" +
+			"<form action='/markers/" + marker.id + "/update' method='patch'>" +
 			"<p>" + name + "</p>" +
-			"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
+			"<p><textarea name='marker[info]' id='marker_info'>" + marker.info + "</textarea></p>" +
 			"<p><input type='submit' value='Update'></p>" +
 			"</form>";
-		iWindow.addTab('Edit Info', iForm);
+		marker.infowindow.addTab('Edit Info', iForm);
 		if (this.clicked == true) {
 			iForm.style.display = 'inherit';
 			calForm.style.display = 'inherit';
@@ -329,7 +295,7 @@ function initialize() {
 			iForm.style.display = 'hidden';
 			calForm.style.display = 'hidden';
 		}
-		addEvent(iWindow, id);
+		addEvent(marker.infowindow, marker.id);
 	};
 
 
