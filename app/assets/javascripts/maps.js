@@ -59,11 +59,12 @@ function initialize() {
 			if (j >= placeIds.length) {
 				console.log("clear" + j);
 				clearInterval(interval);
-			}
+			}else {
 				var placeId = placeIds[j];
 				console.log("dom calling place from ids: " + j + placeId);
 				j++;
 				getPlaceFromId(placeId);
+			}
 		}, 1000);
 		// for (var i = 0; i < tRows.length; i++) {
 		// 	var placeId = placeIds[i];
@@ -101,8 +102,8 @@ function initialize() {
 			} else {
 				setTimeout(function() {
 					service.getDetails(request, callback);
-				}, 500)
-				console.log("place from id :" + status);
+				}, 1000)
+				
 			}
 		}
 	};
