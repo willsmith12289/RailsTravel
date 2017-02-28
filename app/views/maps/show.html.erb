@@ -1,3 +1,4 @@
+
 <section>
 <h1><%= @map.title %></h1>
 <h3><%= link_to "Back To Maps", maps_path %></h3>
@@ -17,10 +18,11 @@
 <div id="infoForm" >
 </div>
 <div id="calForm"></div>
-<table id="markers" style="display: none">
+<table id="markers" >
 <%= render(@map.markers) %>
 </table>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize"></script>
-  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-  </script>
+<%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize' %>
+<%= javascript_include_tag 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js' %>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=intialize"></script> -->
+<!--   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+  </script> -->

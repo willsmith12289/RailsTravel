@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
-  get 'markers/:id', to: 'markers#update'
+  get 'markers/:id/update', to: 'markers#update'
+
   resources :maps do
     resources :events, only: :index
     resources :markers, shallow: true

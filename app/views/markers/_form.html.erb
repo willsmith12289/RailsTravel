@@ -20,10 +20,10 @@
     <%= f.text_field :raw_address %>
   </div>
   <div class="field">
-    <%= f.hidden_field :latitude %>
+    <%= f.hidden_field :latitude, value: @marker.latitude %>
   </div>
   <div class="field">
-    <%= f.hidden_field :longitude %>
+    <%= f.hidden_field :longitude, value: @marker.longitude  %>
   </div>
   <div class="field">
     <%= f.label :info %><br>

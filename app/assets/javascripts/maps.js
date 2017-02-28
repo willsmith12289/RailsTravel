@@ -15,12 +15,15 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
-
-	var map = new google.maps.Map(document.getElementById('map'), myOptions);
-
+	var mapCanvas = document.getElementById('map');
+	var map = new google.maps.Map(mapCanvas, myOptions);
+	var placeInput = document.getElementById('marker_place_id');
 	//auto complete / bias autocomplete to current maps bounds
 	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
-	var form = document.getElementById('form');
+	var form = document.getElementById('form'),
+		markLat = document.getElementById('marker_latitude'),
+		markLng = document.getElementById('marker_longitude');
+
 	form.addEventListener("submit", autoComplete);
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
@@ -52,13 +55,16 @@ function initialize() {
 		//var tRows = document.getElementsByTagName('tr');
 		var j = 0
 		var interval = setInterval(function() {
-			var placeId = placeIds[j];
-			getPlaceFromId(placeId);
-			j++;
+			console.log("j="+j);
 			if (j >= placeIds.length) {
+				console.log("clear" + j);
 				clearInterval(interval);
-			};
-		}, 250);
+			}
+				var placeId = placeIds[j];
+				console.log("dom calling place from ids: " + j + placeId);
+				j++;
+				getPlaceFromId(placeId);
+		}, 1000);
 		// for (var i = 0; i < tRows.length; i++) {
 		// 	var placeId = placeIds[i];
 		// 	console.log(placeId);
@@ -91,9 +97,12 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-					addMarker(place);
+				setInterval(addMarker(place), 500);
 			} else {
-				alert("place from id :" + status);
+				setTimeout(function() {
+					service.getDetails(request, callback);
+				}, 500)
+				console.log("place from id :" + status);
 			}
 		}
 	};
@@ -120,11 +129,14 @@ function initialize() {
 			} else {
 				bounds.extend(place.geometry.location);
 			}
-			var placeInput = document.getElementById('marker_place_id'),
-				placeId = place.place_id;
+
+			var placeId = place.place_id;
+			console.log(placeId);
 			placeInput.value = placeId;
 			// Create a marker for each place.
-			addMarker(place);
+				addMarker(place);
+			
+
 		});
 		map.fitBounds(bounds);
 	};
@@ -136,7 +148,7 @@ function initialize() {
 	 * binds formatInfoWindow() to the marker(this = this.marker)
 	 */
 	function addMarker(place) {
-
+		console.log("addMarker");
 		var icon = {
 			url: place.icon,
 			size: new google.maps.Size(71, 71),
@@ -155,7 +167,17 @@ function initialize() {
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
-		setTimeout(getDetails(place, marker), 250);
+		var i = 0;
+		var interval = setInterval(function() {
+			getDetails(place, marker);
+			i++;
+			if (i > markers.length) {
+				clearInterval(interval);
+				var markerCluster = new MarkerClusterer(map, markers, {
+					imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+				});
+			}
+		}, 500);
 		// var service = new google.maps.places.PlacesService(map);
 
 		// service.getDetails({
@@ -293,7 +315,7 @@ function initialize() {
 		var iForm = document.getElementById('infoForm');
 
 		iForm.innerHTML =
-			"<form action='/markers/" + id + "' method='patch'>" +
+			"<form action='/markers/" + id + "/update' method='patch'>" +
 			"<p>" + name + "</p>" +
 			"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 			"<p><input type='submit' value='Update'></p>" +
@@ -451,13 +473,8 @@ function initialize() {
 			"</form>";
 
 		iWindow.addTab('Add Event', calForm);
-	}
-
-	window.onload = function() {
-		var markerCluster = new MarkerClusterer(map, markers, {
-			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-		});
 	};
+
 }
 
 
