@@ -22,7 +22,6 @@ function initialize() {
 	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
 	var form = document.getElementById('form');
 	form.addEventListener("submit", autoComplete);
-	var placeInput = document.getElementById('marker_place_id');
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
 	});
@@ -31,15 +30,15 @@ function initialize() {
 	/*
 	 *  when address in autocomplete is selected place_id is posted
 	 *  to Marker.
-	 *	Adds place_id to hidden form field before posted to marker model
+	 *	
 	 */
-	addressInput.addListener('places_changed', function() {
-		var places = addressInput.getPlaces();
-		places.forEach(function(place) {
-			var placeId = place.place_id;
-			placeInput.value = placeId;
-		})
-	});
+	// addressInput.addListener('places_changed', function() {
+	// 	var places = addressInput.getPlaces();
+	// 	places.forEach(function(place) {
+	// 		var placeId = place.place_id;
+	// 		placeInput.value = placeId;
+	// 	})
+	// });
 
 
 	/*
@@ -50,13 +49,30 @@ function initialize() {
 	document.addEventListener("DOMContentLoaded", function() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
-		var tRows = document.getElementsByTagName('tr');
-		for (var i = 0; i < tRows.length; i++) {
-			var placeId = placeIds[i];
-			//placeId = placeId.toString();
-			//placeId = placeId.trim();
+		//var tRows = document.getElementsByTagName('tr');
+		var j = 0
+		var interval = setInterval(function() {
+			var placeId = placeIds[j];
 			getPlaceFromId(placeId);
-		};
+			j++;
+			if (j >= placeIds.length) {
+				clearInterval(interval);
+			};
+		}, 250);
+		// for (var i = 0; i < tRows.length; i++) {
+		// 	var placeId = placeIds[i];
+		// 	console.log(placeId);
+		// 	var i = 0;
+		// 	//placeId = placeId.toString();
+		// 	//placeId = placeId.trim();
+		// 	var interval = setInterval(function () {
+		// 		getPlaceFromId(placeId);
+		// 		j++;
+		// 		if(j = (placeIds.length - 1)) {
+		// 			clearInterval(interval);
+		// 		};
+		// 	}, 250);
+		// };
 	});
 
 
@@ -75,7 +91,7 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				setInterval(addMarker(place), 250);
+					addMarker(place);
 			} else {
 				alert("place from id :" + status);
 			}
@@ -84,8 +100,10 @@ function initialize() {
 
 
 	/*
-	 * This function adds new markers from form to map
-	 * Auto completes addressInput on form; then gets place on form    * submit. Passes place to createMarker.
+	 * Auto completes addressInput on form; then gets place on form submit.
+	 * Adds place_id to hidden Marker form field
+	 * Passes place to addMarker.
+	 * Redraws maps bounds to focus on new place/marker
 	 */
 	function autoComplete() {
 		var Gplace = addressInput.getPlaces();
@@ -102,7 +120,9 @@ function initialize() {
 			} else {
 				bounds.extend(place.geometry.location);
 			}
-			var placeId = place.place_id;
+			var placeInput = document.getElementById('marker_place_id'),
+				placeId = place.place_id;
+			placeInput.value = placeId;
 			// Create a marker for each place.
 			addMarker(place);
 		});
@@ -135,7 +155,23 @@ function initialize() {
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
+		setTimeout(getDetails(place, marker), 250);
+		// var service = new google.maps.places.PlacesService(map);
 
+		// service.getDetails({
+		// 	placeId: place.place_id
+		// }, function(place, status) {
+		// 	if (status === google.maps.places.PlacesServiceStatus.OK) {
+		// 		google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
+		// 	}
+		// 	else {
+		// 		alert("addMarker:" + status);
+		// 	};
+		// });
+	};
+
+
+	function getDetails(place, marker) {
 		var service = new google.maps.places.PlacesService(map);
 
 		service.getDetails({
@@ -143,13 +179,11 @@ function initialize() {
 		}, function(place, status) {
 			if (status === google.maps.places.PlacesServiceStatus.OK) {
 				google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
-			}
-			else {
+			} else {
 				alert("addMarker:" + status);
 			};
 		});
-	};
-
+	}
 
 	/*
 	 * Creates infowindow template based on returned GetDetails request
