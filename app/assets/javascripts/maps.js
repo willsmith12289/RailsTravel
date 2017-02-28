@@ -270,12 +270,18 @@ function initialize() {
 		});
 
 		marker.infowindow.addTab(placeInfo.name, content);
+
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
 			editInfo(marker, placeInfo.name);
-			addEvent(marker, marker.id);
-			marker.infowindow.open(map, marker);
+				addEvent(marker, marker.id);
+			if (!marker.infowindow.isOpen()) {
+				marker.infowindow.open(map, marker);
+
+			} else {
+				marker.infowindow.close();
+			}
 		});
-		
+
 	}
 
 
@@ -283,31 +289,29 @@ function initialize() {
 	 *Creates infobubble tab with marker update form in it
 	 */
 	function editInfo(marker, name) {
-		
+		marker.infowindow.removeTab(2);
+		//iForm.innerHTML = "";
 		var id = marker.id,
-				info = marker.info;
-				console.log(iForm);
+			info = marker.info;
+		console.log(iForm);
 		iForm.innerHTML =
 			"<form action='/markers/" + id + "/update' method='patch'>" +
 			"<p>" + name + "</p>" +
 			"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 			"<p><input type='submit' value='Update'></p>" +
 			"</form>";
+
+
 		marker.infowindow.addTab('Edit Info', iForm);
-		if (marker.clicked == true) {
-			iForm.style.visibility = 'hidden';
-			marker.clicked = true
-		} else {
-			iForm.style.visibility = 'visible';
-			marker.clicked = false;
-		};
+
 	};
 
 
 	function addEvent(marker, id) {
-		
+		marker.infowindow.removeTab(2);
+		//calForm.innerHTML = "";
 		var mapId = gon.map_id;
-								console.log(calForm);
+		console.log(calForm);
 		calForm.innerHTML =
 			"<form class='new_event' id='new_event' enctype='multipart/form-data' action='/events' method='post'>" +
 			"<div class='field'><label for='event_name'>Name:</label>" +
@@ -442,12 +446,6 @@ function initialize() {
 			"</form>";
 
 		marker.infowindow.addTab('Add Event', calForm);
-		if (marker.clicked === true) {
-			calForm.style.visibility = 'hidden';
-			marker.clicked = true
-		} else {
-			calForm.style.visibility = 'visible';
-			marker.clicked = false;
-		};
+
 	};
 };
