@@ -75,7 +75,9 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				addMarker(place);
+				setInterval(addMarker(place), 250);
+			} else {
+				alert("place from id :" + status);
 			}
 		}
 	};
@@ -141,6 +143,9 @@ function initialize() {
 		}, function(place, status) {
 			if (status === google.maps.places.PlacesServiceStatus.OK) {
 				google.maps.event.addListener(marker, 'click', formatInfoWindow.bind(marker, place));
+			}
+			else {
+				alert("addMarker:" + status);
 			};
 		});
 	};
