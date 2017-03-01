@@ -297,6 +297,7 @@ function editInfo(marker, name) {
 		"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 		"<p><input type='submit' value='Update'></p>" +
 		"</form>" +
+		"<a href='/markers/" + id + "' controller='markers' data-method='delete' id='infoDelBtn'>Delete Marker</a>"
 		"</div>";
 
 	marker.infowindow.addTab('Edit Info', iForm);
@@ -480,8 +481,6 @@ function geoLocate(place) {
 
 
 function showPosition(position, place) {
-	// var directionForm = document.getElementById('directionForm');
-	// directionForm.style.display = "inherit";
 	directionsBtn.onclick = function() {
 		var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		getDirections(place, latLng);
