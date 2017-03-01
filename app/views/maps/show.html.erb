@@ -10,7 +10,7 @@
 <div id="form">
   <%= render 'markers/form' %>
 </div>
-<div id="directions">
+<div id="directionForm">
   <strong>Mode of Travel: </strong>
   <select id="mode">
     <option value="DRIVING">Driving</option>
@@ -24,8 +24,7 @@
 <table id="markers" >
 <%= render(@map.markers) %>
 </table>
-<%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize' %>
-<%= javascript_include_tag 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js' %>
+  <%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize' %>
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=intialize"></script> -->
 <!--   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
   </script> -->

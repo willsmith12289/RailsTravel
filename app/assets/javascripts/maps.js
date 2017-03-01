@@ -41,14 +41,14 @@ function initialize() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
 		var j = 0
+		console.log("j:"+j)
 		var interval = setInterval(function() {
-			console.log("j=" + j);
 			if (j >= placeIds.length) {
-				console.log("clear" + j);
+				console.log("caling clear interval" + j);
 				clearInterval(interval);
 			} else {
 				var placeId = placeIds[j];
-				console.log("dom Event calling place from IDs: " + j + placeId);
+				console.log("calling place from IDs: " + "j:"+j+"pID:" + placeId);
 				j++;
 				getPlaceFromId(placeId);
 			};
@@ -63,7 +63,7 @@ function initialize() {
 	 * Calls addMarker on returned place.
 	 */
 	function getPlaceFromId(place) {
-		console.log("in place from ID");
+		
 		var request = {
 			placeId: place
 		};
@@ -72,6 +72,7 @@ function initialize() {
 
 		function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
+
 				setInterval(addMarker(place), 100);
 			} else {
 				setTimeout(function() {
@@ -435,6 +436,7 @@ function initialize() {
 		marker.infowindow.addTab('Add Event', calForm);
 	};
 
+
 	function getDirections(place, latLng) {
 		directionsDisplay.setMap(map);
 		var start = latLng,
@@ -454,21 +456,22 @@ function initialize() {
 		});
 	}
 
+
 	function geoLocate(place) {
 		if (navigator.geolocation) {
 			navigator.geolocation.watchPosition(function(position) {
-					showPosition(position, place)
+				showPosition(position, place)
 			});
 		} else {
 			alert("Geolocation is not supported by this browser.");
 		}
 	}
 
+
 	function showPosition(position, place) {
-		directionsBtn.onclick = function () {
+		directionsBtn.onclick = function() {
 			var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			getDirections(place, latLng);
 		};
 	};
-
 };
