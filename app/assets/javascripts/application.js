@@ -10,9 +10,11 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require handlebars
 //= require jquery
 //= require jquery_ujs
 //= require maps
 //= require infobubble
 //= require markerclusterer
+//= require_tree ./templates
 //= require_tree .
