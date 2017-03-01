@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }
   get 'markers/:id/update', to: 'markers#update'
-
+  get 'markers/:id/destroy', to: 'markers#destroy'
   resources :maps do
     resources :events, only: :index
     resources :markers, shallow: true

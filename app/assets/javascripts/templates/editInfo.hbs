@@ -4,5 +4,5 @@
 		<div><textarea name='marker[info]' id='marker_info'>{{info}}</textarea></div>
 		<p><input type='submit' value='Update'></p>
 	</form>
-		<a href='/markers/{{id}}' controller='markers' data-method='delete' id='infoDelBtn'>Delete Marker</a>
+	<a controller="markers" data-method="delete" href="/markers/{{id}}/destroy" id='infoDelBtn'>Destroy</a>
 </div>
