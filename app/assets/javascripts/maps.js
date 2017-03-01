@@ -1,9 +1,22 @@
 var markers = [],
-	map;
+	map,
+	directionsBtn;
 
 function initialize() {
 	var lat = parseFloat(gon.lat),
 		lng = parseFloat(gon.lng);
+	// directionsDisplay,
+	// directionsService = new google.maps.DirectionsService(),
+	// mapCanvas = document.getElementById('map'),
+	// map = new google.maps.Map(mapCanvas, myOptions),
+	// placeInput = document.getElementById('marker_place_id'),
+	// calForm = document.getElementById('calForm'),
+	// iForm = document.getElementById('infoForm'),
+	// directDiv = document.getElementById('directions'),
+	// addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
+	// form = document.getElementById('form'),
+	// markLat = document.getElementById('marker_latitude'),
+	// markLng = document.getElementById('marker_longitude');
 
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -15,14 +28,16 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
-	var mapCanvas = document.getElementById('map');
-	var map = new google.maps.Map(mapCanvas, myOptions);
-	var placeInput = document.getElementById('marker_place_id');
-	var calForm = document.getElementById('calForm');
-	var iForm = document.getElementById('infoForm');
-	//auto complete / bias autocomplete to current maps bounds
-	var addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address'));
-	var form = document.getElementById('form'),
+	var directionsService = new google.maps.DirectionsService(),
+		directionsDisplay = new google.maps.DirectionsRenderer(),
+		directionsBtn = document.getElementById('directionsBtn'),
+		mapCanvas = document.getElementById('map'),
+		map = new google.maps.Map(mapCanvas, myOptions),
+		placeInput = document.getElementById('marker_place_id'),
+		//calForm = document.getElementById('calForm'),
+		//iForm = document.getElementById('infoForm'),
+		addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
+		form = document.getElementById('form'),
 		markLat = document.getElementById('marker_latitude'),
 		markLng = document.getElementById('marker_longitude');
 
@@ -30,22 +45,6 @@ function initialize() {
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
 	});
-
-
-	/*
-	 *  when address in autocomplete is selected place_id is posted
-	 *  to Marker.
-	 *	
-	 */
-	// addressInput.addListener('places_changed', function() {
-	// 	var places = addressInput.getPlaces();
-	// 	places.forEach(function(place) {
-	// 		var placeId = place.place_id;
-	// 		placeInput.value = placeId;
-	// 	})
-	// });
-
-
 	/*
 	 * passes place_id from exisiting marker models to getPlaceFromId
 	 * traverses hidden table and assigns place_id to the corresponding
@@ -54,7 +53,6 @@ function initialize() {
 	document.addEventListener("DOMContentLoaded", function() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
-		//var tRows = document.getElementsByTagName('tr');
 		var j = 0
 		var interval = setInterval(function() {
 			console.log("j=" + j);
@@ -63,25 +61,11 @@ function initialize() {
 				clearInterval(interval);
 			} else {
 				var placeId = placeIds[j];
-				console.log("dom calling place from ids: " + j + placeId);
+				console.log("dom Event calling place from IDs: " + j + placeId);
 				j++;
 				getPlaceFromId(placeId);
-			}
+			};
 		}, 100);
-		// for (var i = 0; i < tRows.length; i++) {
-		// 	var placeId = placeIds[i];
-		// 	console.log(placeId);
-		// 	var i = 0;
-		// 	//placeId = placeId.toString();
-		// 	//placeId = placeId.trim();
-		// 	var interval = setInterval(function () {
-		// 		getPlaceFromId(placeId);
-		// 		j++;
-		// 		if(j = (placeIds.length - 1)) {
-		// 			clearInterval(interval);
-		// 		};
-		// 	}, 250);
-		// };
 	});
 
 
@@ -92,6 +76,7 @@ function initialize() {
 	 * Calls addMarker on returned place.
 	 */
 	function getPlaceFromId(place) {
+		console.log("in place from ID");
 		var request = {
 			placeId: place
 		};
@@ -104,10 +89,9 @@ function initialize() {
 			} else {
 				setTimeout(function() {
 					service.getDetails(request, callback);
-				}, 500)
-
-			}
-		}
+				}, 500);
+			};
+		};
 	};
 
 
@@ -132,14 +116,10 @@ function initialize() {
 			} else {
 				bounds.extend(place.geometry.location);
 			}
-
+			console.log("In autoComplete");
 			var placeId = place.place_id;
-			console.log(placeId);
 			placeInput.value = placeId;
-			// Create a marker for each place.
 			addMarker(place);
-
-
 		});
 		map.fitBounds(bounds);
 	};
@@ -151,7 +131,7 @@ function initialize() {
 	 * binds formatInfoWindow() to the marker(this = this.marker)
 	 */
 	function addMarker(place) {
-		console.log("addMarker");
+		console.log("in addMarker");
 		var icon = {
 			url: place.icon,
 			size: new google.maps.Size(71, 71),
@@ -163,16 +143,17 @@ function initialize() {
 			map: map,
 			icon: icon,
 			title: place.name,
-			position: place.geometry.location,
-			clicked: false
+			position: place.geometry.location
 		});
 		markers.push(marker);
 		marker.infowindow = new InfoBubble({
 			maxWidth: 300
 		});
+
 		var markerCluster = new MarkerClusterer(map, markers, {
 			imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
 		});
+
 		formatInfoWindow(marker, place);
 	};
 
@@ -192,13 +173,13 @@ function initialize() {
 				marker.id = ids[i];
 			}
 		}, marker);
-		// if (marker.clicked == false) {
-		// 	marker.clicked = true;
+
 		try {
 			var placeInfo = {
 				name: place.name,
 				open: place.opening_hours.open_now,
 				address: place.vicinity,
+				coords: place.geometry.location,
 				phoneI: place.international_phone_number,
 				phone: place.formatted_phone_number,
 				rating: place.rating,
@@ -211,22 +192,31 @@ function initialize() {
 				info: marker.info,
 				id: marker.id
 			}
-			var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-				'<address>##address##</address>' +
-				'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
-				'<p><a href="tel:##phoneI##">##phone##</a></p>' +
-				'<h3><b>Notes:</b></h3>' +
-				'<p>##info##</p>' +
-				'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
-				'<p>##reviewText##</p>' +
-				'<img src="##photo##"></img>' +
-				'</div>';
+			var contentTemplate =
+				"<div class='infowindow'>" +
+				"<strong><h1>##name##</h1></strong>" +
+				"<address>##address##</address>" +
+				"<p>" +
+				"Open Now: ##open##&nbsp;&nbsp;&nbsp;" +
+				"Rating: ##rating##&nbsp;&nbsp;&nbsp; " +
+				"<a href='##website##''>Website</a>" +
+				"</p>" +
+				"<p><a href='tel:##phoneI##'>##phone##</a></p>" +
+				"<h3><b>Notes:</b></h3>" +
+				"<p>##info##</p>" +
+				"<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+				"Rating: ##reviewRate##" +
+				"</h4>" +
+				"<p>##reviewText##</p>" +
+				"<img src='##photo##'></img>" +
+				"</div>";
 		} catch (e) {
 			try {
 				placeInfo = {
 					name: place.name,
 					open: place.opening_hours.open_now,
 					address: place.vicinity,
+					coords: place.geometry.location,
 					phoneI: place.international_phone_number,
 					phone: place.formatted_phone_number,
 					rating: place.rating,
@@ -237,19 +227,30 @@ function initialize() {
 					info: marker.info,
 					id: marker.id
 				}
-				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-					'<address>##address##</address>' +
-					'<p>Open Now: ##open##&nbsp;&nbsp;&nbsp; Rating: ##rating##&nbsp;&nbsp;&nbsp; ' + '<a href="##website##">Website</a></p>' +
-					'<p><a href="tel:##phoneI##">##phone##</a></p>' +
-					'<h3><b>Notes:</b></h3>' +
-					'<p>##info##</p>' +
-					'<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rating: ##reviewRate##</h4>' +
-					'<p>##reviewText##</p>' +
-					'</div>';
+				var contentTemplate =
+					"<div class='infowindow'>" +
+					"<strong><h1>##name##</h1></strong>" +
+
+					"<address>##address##</address>" +
+
+					"<p>" +
+					"Open Now: ##open##&nbsp;&nbsp;&nbsp;" +
+					"Rating: ##rating##&nbsp;&nbsp;&nbsp; " +
+					"<a href='##website##''>Website</a>" +
+					"</p>" +
+					"<p><a href='tel:##phoneI##'>##phone##</a></p>" +
+					"<h3><b>Notes:</b></h3>" +
+					"<p>##info##</p>" +
+					"<h4>##reviewAuth##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+					"Rating: ##reviewRate##" +
+					"</h4>" +
+					"<p>##reviewText##</p>" +
+					"</div>";
 			} catch (e) {
 				placeInfo = {
 					name: place.name,
 					address: place.vicinity,
+					coords: place.geometry.location,
 					phoneI: place.international_phone_number,
 					phone: place.formatted_phone_number,
 					rating: place.rating,
@@ -257,13 +258,16 @@ function initialize() {
 					info: marker.info,
 					id: marker.id
 				}
-				var contentTemplate = '<div class="infowindow"><strong><h1>##name##</h1></strong>' +
-					'<address>##address##</address>' +
-					'<h3><b>Notes:</b></h3>' +
-					'<p>##info##</p>' +
-					'</div>';
+				var contentTemplate =
+					"<div class='infowindow'>" +
+					"<strong><h1>##name##</h1></strong>" +
+					"<address>##address##</address>" +
+					"<h3><b>Notes:</b></h3>" +
+					"<p>##info##</p>" +
+					"</div>";
 			}
 		}
+
 		//replaces var between ##'s with property of placeInfo object, or empty string
 		var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
 			return placeInfo[prop];
@@ -272,16 +276,14 @@ function initialize() {
 		marker.infowindow.addTab(placeInfo.name, content);
 
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
-			editInfo(marker, placeInfo.name);
-				addEvent(marker, marker.id);
-			if (!marker.infowindow.isOpen()) {
-				marker.infowindow.open(map, marker);
 
-			} else {
-				marker.infowindow.close();
+			editInfo(marker, placeInfo.name);
+			addEvent(marker, marker.id);
+			if (!marker.infowindow.isOpen()) {
+				geoLocate(place);
+				marker.infowindow.open(map, marker);
 			}
 		});
-
 	}
 
 
@@ -293,13 +295,14 @@ function initialize() {
 		//iForm.innerHTML = "";
 		var id = marker.id,
 			info = marker.info;
-		console.log(iForm);
-		iForm.innerHTML =
+		var iForm =
+			"<div id=infoForm >" +
 			"<form action='/markers/" + id + "/update' method='patch'>" +
 			"<p>" + name + "</p>" +
 			"<p><textarea name='marker[info]' id='marker_info'>" + info + "</textarea></p>" +
 			"<p><input type='submit' value='Update'></p>" +
-			"</form>";
+			"</form>" +
+			"</div>";
 
 
 		marker.infowindow.addTab('Edit Info', iForm);
@@ -311,8 +314,8 @@ function initialize() {
 		marker.infowindow.removeTab(2);
 		//calForm.innerHTML = "";
 		var mapId = gon.map_id;
-		console.log(calForm);
-		calForm.innerHTML =
+		var calForm =
+			"<div id='calForm'>" +
 			"<form class='new_event' id='new_event' enctype='multipart/form-data' action='/events' method='post'>" +
 			"<div class='field'><label for='event_name'>Name:</label>" +
 			"<input type='text' name='event[name]' id='event_name'></div>" +
@@ -443,9 +446,58 @@ function initialize() {
 			"<input type='file' name='event[document]' id='event_document'></div>" +
 			"<div class='actions'>" +
 			"<input type='submit' value='Create Event' name='commit'></div>" +
-			"</form>";
+			"</form>" +
+			"</div>";
 
 		marker.infowindow.addTab('Add Event', calForm);
 
 	};
+
+
+	// directionsBtn.onclick = getDirections();
+
+	function getDirections(place, latLng) {
+		directionsDisplay.setMap(map);
+		var start = latLng,
+			end = place.geometry.location,
+			mode = document.getElementById('mode').value;
+		console.log("here:" + latLng + "   there:" + end);
+		var request = {
+			origin: start,
+			destination: end,
+			travelMode: google.maps.TravelMode[mode]
+		};
+		directionsService.route(request, function(result, status) {
+			if (status == 'OK') {
+				directionsDisplay.setDirections(result);
+			} else {
+				console.log("error: " + status);
+			}
+		});
+	}
+
+	function geoLocate(place) {
+		if (navigator.geolocation) {
+			navigator.geolocation.watchPosition(function(position) {
+					showPosition(position, place)
+			});
+		} else {
+			console.log("Geolocation is not supported by this browser.");
+		}
+	}
+
+	function showPosition(position, place) {
+		directionsBtn.onclick = function () {
+			var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			getDirections(place, latLng);
+		};
+	};
+
 };
+// $(document).ready(function() {
+// 			var infoTab = document.getElementById('infowindow');
+// 			var btn = document.createElement("button");
+// 			btn.innerHTML = "Get Directions";
+// 			btn.setAttribute("id", "directionsBtn");
+// 		infoTab.appendChild(btn);
+// });

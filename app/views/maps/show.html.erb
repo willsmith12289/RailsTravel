@@ -6,19 +6,21 @@
 <h3><%= link_to "Calendar", map_events_path(@map) %></h3>
 
 </section>
-<div>
-</div>
 
 <div id="form">
   <%= render 'markers/form' %>
 </div>
-
+<div id="directions">
+  <strong>Mode of Travel: </strong>
+  <select id="mode">
+    <option value="DRIVING">Driving</option>
+    <option value="WALKING">Walking</option>
+    <option value="BICYCLING">Bicycling</option>
+    <option value="TRANSIT">Transit</option>
+  </select>
+  <button id="directionsBtn">Get Directions</button>
+</div>
 <div id="map"></div>
-
-<div id="infoForm" >
-</div>
-<div id="calForm">
-</div>
 <table id="markers" >
 <%= render(@map.markers) %>
 </table>

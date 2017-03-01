@@ -26,6 +26,18 @@ section {
 table {
 	float: left;
 }
+#directions {
+	font-size: 1.5em;
+
+	select {
+		font-size: 1em;
+		width: 20%;
+	}
+	#directionsBtn {
+		font-size: 1em;
+		border-radius: 5px;
+	}
+}
 // .infowindow {
 	// 	width: 300px;
 	// 	height: 300px;
