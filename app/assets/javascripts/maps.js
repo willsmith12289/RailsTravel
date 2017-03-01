@@ -5,18 +5,6 @@ var markers = [],
 function initialize() {
 	var lat = parseFloat(gon.lat),
 		lng = parseFloat(gon.lng);
-	// directionsDisplay,
-	// directionsService = new google.maps.DirectionsService(),
-	// mapCanvas = document.getElementById('map'),
-	// map = new google.maps.Map(mapCanvas, myOptions),
-	// placeInput = document.getElementById('marker_place_id'),
-	// calForm = document.getElementById('calForm'),
-	// iForm = document.getElementById('infoForm'),
-	// directDiv = document.getElementById('directions'),
-	// addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
-	// form = document.getElementById('form'),
-	// markLat = document.getElementById('marker_latitude'),
-	// markLng = document.getElementById('marker_longitude');
 
 	var myOptions = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -34,8 +22,7 @@ function initialize() {
 		mapCanvas = document.getElementById('map'),
 		map = new google.maps.Map(mapCanvas, myOptions),
 		placeInput = document.getElementById('marker_place_id'),
-		//calForm = document.getElementById('calForm'),
-		//iForm = document.getElementById('infoForm'),
+
 		addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
 		form = document.getElementById('form'),
 		markLat = document.getElementById('marker_latitude'),
@@ -304,15 +291,12 @@ function initialize() {
 			"</form>" +
 			"</div>";
 
-
 		marker.infowindow.addTab('Edit Info', iForm);
-
 	};
 
 
 	function addEvent(marker, id) {
 		marker.infowindow.removeTab(2);
-		//calForm.innerHTML = "";
 		var mapId = gon.map_id;
 		var calForm =
 			"<div id='calForm'>" +
@@ -448,20 +432,14 @@ function initialize() {
 			"<input type='submit' value='Create Event' name='commit'></div>" +
 			"</form>" +
 			"</div>";
-
 		marker.infowindow.addTab('Add Event', calForm);
-
 	};
-
-
-	// directionsBtn.onclick = getDirections();
 
 	function getDirections(place, latLng) {
 		directionsDisplay.setMap(map);
 		var start = latLng,
 			end = place.geometry.location,
 			mode = document.getElementById('mode').value;
-		console.log("here:" + latLng + "   there:" + end);
 		var request = {
 			origin: start,
 			destination: end,
@@ -482,7 +460,7 @@ function initialize() {
 					showPosition(position, place)
 			});
 		} else {
-			console.log("Geolocation is not supported by this browser.");
+			alert("Geolocation is not supported by this browser.");
 		}
 	}
 
@@ -494,10 +472,3 @@ function initialize() {
 	};
 
 };
-// $(document).ready(function() {
-// 			var infoTab = document.getElementById('infowindow');
-// 			var btn = document.createElement("button");
-// 			btn.innerHTML = "Get Directions";
-// 			btn.setAttribute("id", "directionsBtn");
-// 		infoTab.appendChild(btn);
-// });
