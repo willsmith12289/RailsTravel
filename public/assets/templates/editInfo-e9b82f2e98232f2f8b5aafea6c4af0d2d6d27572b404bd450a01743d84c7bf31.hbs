@@ -1,0 +1,13 @@
+<div id=infoForm >
+	<form action='/markers/{{id}}/update' method='patch'>
+		<p> In template: {{name}} </p>
+		<p>
+			<textarea name='marker[info]' id='marker_info'>
+				{{info}}
+			<textarea>
+		</p>
+		<p><input type='submit' value='Update'></p>
+		</form>
+		<a href='/markers/{{id}}' controller='markers' data-method='delete' id='infoDelBtn'>Delete Marker</a>
+	</form>
+</div>

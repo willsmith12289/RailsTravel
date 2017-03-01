@@ -216,7 +216,7 @@ function initialize() {
 		var content = HandlebarsTemplates['infowindow'](placeInfo);
 		marker.infowindow.addTab(placeInfo.name, content);
 		var editContent = HandlebarsTemplates['editInfo'](placeInfo);
-		marker.infowindow.addTab('Edit Info', editContent);
+		marker.infowindow.addTab('Edit Info', editContent)
 
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
 			

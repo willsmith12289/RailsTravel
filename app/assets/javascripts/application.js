@@ -13,7 +13,6 @@
 //= require handlebars
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require maps
 //= require infobubble
 //= require markerclusterer
