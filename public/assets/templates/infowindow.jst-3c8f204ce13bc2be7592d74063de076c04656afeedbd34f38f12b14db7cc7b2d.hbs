@@ -1,0 +1,19 @@
+
+	<div class='infowindow'>
+		<strong><h1>{{placeInfo.name}}</h1></strong>
+		<address>{{placeInfo.address}}</address>
+		<p>
+			Open Now: {{placeInfo.open}}&nbsp;&nbsp;&nbsp;
+			Rating: {{placeInfo.rating}}&nbsp;&nbsp;&nbsp; 
+			<a href={{placeInfo.website}}>Website</a>
+		</p>
+		<p><a href=tel:{{placeInfo.phoneI}}>{{placeInfo.phone}}</a></p>
+		<h3><b>Notes:</b></h3>
+		<p>{{marker.info}}</p>
+		<h4>
+			{{placeInfo.reviewAuth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Rating: {{placeInfo.reviewRate}}
+		</h4>
+			<p>{{placeInfo.reviewText}}</p>
+			<img src={{placeInfo.photo}}></img>
+	</div>;

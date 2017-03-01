@@ -71,6 +71,11 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
+    handlebars_assets (0.23.1)
+      execjs (~> 2.0)
+      multi_json (~> 1.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -183,6 +188,7 @@ DEPENDENCIES
   devise
   geocoder
   gon
+  handlebars_assets
   jbuilder (~> 2.0)
   jquery-rails
   paperclip (~> 5.0.0)

@@ -1,3 +1,2 @@
 == README
 
-create one infobubble that opens over given marker

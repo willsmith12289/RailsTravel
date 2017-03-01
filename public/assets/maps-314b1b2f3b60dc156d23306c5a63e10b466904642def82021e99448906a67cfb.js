@@ -256,7 +256,7 @@ function initialize() {
 					"</div>";
 			}
 		}
-		var content = HandlebarsTemplates['infowindow'](placeInfo, marker);
+		JST['infowindow'](placeInfo, marker);
 		//replaces var between ##'s with property of placeInfo object, or empty string
 		// var content = contentTemplate.replace(/##(.*?)##/g, function(match, prop) {
 		// 	return placeInfo[prop];
