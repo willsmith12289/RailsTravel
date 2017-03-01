@@ -5,7 +5,7 @@ class MarkersController < ApplicationController
   # GET /markers.json
   def index
     @map = Map.find(params[:map_id])
-    @markers = Marker.all
+    # @markers = Marker.all
     @markers = Marker.where(map_id: @map)
    # @map = params[:map_id]
   end

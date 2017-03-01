@@ -1,0 +1,39 @@
+<%= form_for @event, html: { multipart: true } do |f| %>
+  <% if @event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% @event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.hidden_field :map_id, value: @map %>
+  </div>
+  <div class="field">
+    <%= f.hidden_field :marker_id, value: @marker %>
+  </div>
+  <div class="field">
+    <p>Start Date: <%= @date %></p>
+    <%= f.date_select :start_time, default: @date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_time, 'End Date:' %><br>
+    <%= f.date_select :end_time , default: @date %>
+  </div>
+  <div class="field">
+    <%= f.label :document %><br>
+    <%= f.file_field :document %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Travel</title>
+
   <%= csrf_meta_tags %>
   <%= Gon::Base.render_data %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
 </head>
@@ -16,6 +18,11 @@
   <%= link_to "Sign Up", new_user_registration_path(@user) %>
   <%= link_to "Sign In", new_user_session_path(@user) %>
   <%= link_to "Sign Out", destroy_user_session_path(@user), method: :delete %>
+  <% if user_signed_in? %>
+    <span class="email"><%= current_user.email %></span>
+  <% else %>
+    <span></span>
+  <% end %>
 
 <%= yield %>
 
