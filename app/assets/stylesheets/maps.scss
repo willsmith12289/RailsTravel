@@ -28,12 +28,27 @@ table {
 }
 #directionForm {
 	font-size: 1.5em;
+	position: relative;
+	top: 30%;
+	//left: 5%;
+	z-index: 5;
+	//background-color: #fff;
+	padding: 5px;
+	//border: 1px solid #999;
+	text-align: center;
+	font-family: 'Roboto', 'sans-serif';
+	line-height: 30px;
+	padding-left: 10px;
+	width: 50%;
+	height: 10%;
+	display: none;
 
 	select {
 		font-size: 1em;
-		width: 20%;
+		width: 30%;
 	}
 	#directionsBtn {
+		width: 30%;
 		font-size: 1em;
 		border-radius: 5px;
 	}
