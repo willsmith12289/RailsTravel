@@ -21,7 +21,7 @@ section {
 	width: 65%;
 	height: 75%;
 	float: left;
-	margin: 0 5% 5% 0;
+	margin: 0 5% 0 0;
 }
 table {
 	float: left;
@@ -53,8 +53,7 @@ table {
 		border-radius: 5px;
 	}
 }
-// .infowindow {
-	// 	width: 300px;
-	// 	height: 300px;
-	// 	overflow: auto;
-	//
+#right-panel {
+	width: 65%;
+	margin: 0 0 0 30%;
+}
