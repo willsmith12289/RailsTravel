@@ -1,5 +1,5 @@
 <li>
-  <%= link_to map.title, map_path(map) %>
-  <%= link_to "Delete", map_path(map), method: :delete, data: {confirm: "are you sure?"} %>
-  <%= link_to 'Calender', map_events_path(map) %>
+  <%= link_to map.title, map_path(map), class: "btn btn-default" %>
+  <%= link_to "Delete", map_path(map), method: :delete, data: {confirm: "are you sure?"}, class: "btn btn-default" %>
+  <%= link_to 'Calender', map_events_path(map), class: "btn btn-default" %>
 </li>

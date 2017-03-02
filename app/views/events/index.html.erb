@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Calendar</h1>
-<h3><%= link_to "My Maps", maps_path %></h3>
+<h3><%= link_to "My Maps", maps_path, class: "btn btn-default" %></h3>
 <table>
   <% @events.each do |event| %>
     <tr>
@@ -9,7 +9,7 @@
         <%= link_to event.name, event %>
       </td>
       <td>
-        <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %>
       </td>
     </tr>
   <% end %>
@@ -19,12 +19,12 @@
   <%= date %>
   <br/>
   <% events.each do |event| %>
-    <div>
-      <%= link_to event.name, event %>
-      <%= link_to 'Edit', edit_event_path(event, map_id: @map) %>
-      <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <div class="btn-toolbar" role="toolbar">
+      <%= link_to event.name, event, class: "btn btn-sm" %>
+      <%= link_to 'Edit', edit_event_path(event, map_id: @map), class: "btn btn-sm"%>
+      <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm"%>
     </div>
   <% end %>
-  <%= link_to 'New Event', new_event_path(date: date, map_id: @map)%>
+  <%= link_to 'New Event', new_event_path(date: date, map_id: @map), class: "btn btn-sm btn-default"%>
 <% end %>
 <br>

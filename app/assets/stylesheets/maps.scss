@@ -1,65 +1,64 @@
 // Place all the styles related to the Maps controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here:http://sass-lang.com/
-section {
-	margin: 1%;
-	text-align: center;
+// section {
+	// 	margin: 1%;
+	// 	text-align: center;
 
-	h1 {
-		font-size: 2em;
-	}
-}
-#form {
-	float: left;
-	width: 30%;
+	// 	h1 {
+		// 		font-size: 2em;
 
-	input {
-		width: 90%;
-	}
-}
-#map {
-	width: 65%;
-	height: 75%;
-	float: left;
-	margin: 0 5% 0 0;
-}
-table {
-	float: left;
-}
-#directionForm {
-	font-size: 1.5em;
-	position: absolute;
-	top: 30%;
-	left: 13%;
-	z-index: 5;
-	//background-color: #fff;
-	padding: 5px;
-	//border: 1px solid #999;
-	text-align: center;
-	font-family: 'Roboto', 'sans-serif';
-	line-height: 30px;
-	padding-left: 10px;
-	width: 50%;
-	height: 10%;
-	display: none;
+		//
 
-	select {
-		font-size: 1em;
-		width: 30%;
-	}
-	#directionsBtn {
-		width: 30%;
-		font-size: 1em;
-		border-radius: 5px;
-	}
-}
-#right-panel {
-	width: 65%;
-	margin: 0 0 0 30%;
-}
-#infoDelBtn {
-	text-decoration: none;
-	border: 1px solid black;
-	border-radius: 5px;
-	padding: 1% 5% 1% 5%;
-}
+		//
+
+		#form {
+			float: left;
+			width: 30%;
+
+			input {
+				width: 90%;
+			}
+		}
+		#map {
+			width: 65%;
+			height: 75%;
+			float: left;
+			margin: 0 5% 0 0;
+		}
+		table {
+			float: left;
+		}
+		#directionForm {
+			font-size: 1.5em;
+			position: absolute;
+			top: 50%;
+			left: 30%;
+			z-index: 5;
+			padding: 5px;
+			text-align: center;
+			font-family: 'Roboto', 'sans-serif';
+			line-height: 30px;
+			padding-left: 10px;
+			width: 20%;
+			height: 10%;
+			display: none;
+
+			#mode {
+				font-size: 1em;
+			}
+			#directionsBtn {
+				font-size: 1em;
+				border-radius: 5px;
+			}
+		}
+		#right-panel {
+			width: 65%;
+			margin: 0 0 0 30%;
+		}
+		#infoDelBtn {
+			text-decoration: none;
+			border: 1px solid black;
+			border-radius: 5px;
+			padding: 1% 5% 1% 5%;
+		}

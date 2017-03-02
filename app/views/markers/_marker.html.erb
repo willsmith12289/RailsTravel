@@ -21,10 +21,10 @@
     <%=marker.place_id %>
   </td>
   <td>
-    <%= link_to 'Show', marker_path(marker.id) %>
+    <%= link_to 'Show', marker_path(marker.id), class: "btn btn-default" %>
   </td>
   <td>
-    <%= link_to 'Destroy', marker_path(marker), controller: 'markers', method: :delete %>
+    <%= link_to 'Destroy', marker_path(marker), controller: 'markers', method: :delete, class: "btn btn-default" %>
   </td>
   <td class="place">
     <%=marker.id %>
