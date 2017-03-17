@@ -247,7 +247,7 @@ function initialize() {
 
 	function getDirections(place, latLng) {
 		directionsDisplay.setMap(map);
-		directionsDisplay.setPanel(document.getElementById('right-panel'));
+		directionsDisplay.setPanel(document.getElementById('directionForm'));
 
 		var start = latLng,
 			end = place.geometry.location,
