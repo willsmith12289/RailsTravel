@@ -1,6 +1,6 @@
 var markers = [],
-	map,
-	directionsBtn;
+	map;
+//directionsBtn;
 
 function initialize() {
 	var lat = parseFloat(gon.lat),
@@ -19,7 +19,6 @@ function initialize() {
 
 	var directionsService = new google.maps.DirectionsService(),
 		directionsDisplay = new google.maps.DirectionsRenderer(),
-		directionsBtn = document.getElementById('directionsBtn'),
 		directionForm = document.getElementById('directionForm'),
 		mapCanvas = document.getElementById('map'),
 		map = new google.maps.Map(mapCanvas, myOptions),
@@ -45,7 +44,7 @@ function initialize() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
 		var j = 0;
-		console.log("j:" + j + directionsBtn);
+		console.log("j:" + j);
 		var interval = setInterval(function() {
 			if (j >= placeIds.length) {
 				console.log("caling clear interval" + j);
@@ -228,12 +227,12 @@ function initialize() {
 		var eventContent = HandlebarsTemplates['calendar'](placeInfo);
 		marker.infowindow.addTab('Add Event', eventContent);
 
-		var directionsContent = HandlebarsTemplates['travelMode'](placeInfo);
-		placeInfo.stringify = JSON.stringify(placeInfo);
+		var directionsContent = HandlebarsTemplates['travelMode'](place);
 		marker.infowindow.addTab('Get Directions', directionsContent);
 
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
 			if (!marker.infowindow.isOpen()) {
+				geoLocate(place);
 				marker.infowindow.open(map, marker);
 				//directionForm.style.display = "inherit";
 			}
@@ -247,9 +246,9 @@ function initialize() {
 	function getDirections(place, latLng) {
 		directionsDisplay.setMap(map);
 		directionsDisplay.setPanel(document.getElementById('right-panel'));
-		var control = document.getElementById('directionForm');
-		control.style.display = 'block';
-		map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+		// var control = document.getElementsByClassName('directionForm');
+		// control.style.display = 'block';
+		// map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
 		var start = latLng,
 			end = place.geometry.location,
 			mode = document.getElementById('mode').value;
@@ -269,9 +268,11 @@ function initialize() {
 
 
 	function geoLocate(place) {
+
 		if (navigator.geolocation) {
 			navigator.geolocation.watchPosition(function(position) {
-				showPosition(position, place);
+				var directionsBtn = document.getElementsByClassName('directionsBtn');
+				directionsBtn.onclick = showPosition(position, place);
 			});
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -280,11 +281,9 @@ function initialize() {
 
 
 	function showPosition(position, place) {
-		console.log(directionsBtn);
-		$(document).on('click', 'directionsBtn', function(position, place) {
-			var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			getDirections(place, latLng);
-		});
+		console.log("here");
+		var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		getDirections(place, latLng);
 	};
 
 };
