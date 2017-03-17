@@ -27,8 +27,8 @@
 
 <p>
   <strong>Document:</strong>
-  <%= link_to 'Document', @event.document.url %>
+  <%= link_to 'Document', @event.document.url, class: "btn btn-default" %>
 </p>
-<%= link_to 'Show on Map', map_path(@event.map_id, marker_id: @event.marker_id) %> |
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', map_events_path(@event.map_id, @map) %>
+<%= link_to 'Show on Map', map_path(@event.map_id, marker_id: @event.marker_id), class: "btn btn-default" %> |
+<%= link_to 'Edit', edit_event_path(@event), class: "btn btn-default" %> |
+<%= link_to 'Back', map_events_path(@event.map_id, @map), class: "btn btn-default" %>

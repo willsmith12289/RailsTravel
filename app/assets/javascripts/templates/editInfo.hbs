@@ -1,8 +1,13 @@
 <div id=infoForm >
-	<form action='/markers/{{id}}/update' method='patch'>
-		<p> In template: {{name}} </p>
-		<div><textarea name='marker[info]' id='marker_info'>{{info}}</textarea></div>
-		<p><input type='submit' value='Update'></p>
+	<form action='/markers/{{id}}/update' method='patch' role='form'>
+		<div class="form-group">
+			<label for="username">Name: {{name}}</label>
+		</div>
+		<div class="form-group">
+			<label for="marker_info">Marker Info:</label>
+			<textarea name='marker[info]' id='marker_info' class="form-control">{{info}} </textarea>
+		</div>
+		<input type='submit' value='Update' class="btn btn-warning">
 	</form>
-		<a href='/markers/{{id}}' controller='markers' data-method='delete' id='infoDelBtn'>Delete Marker</a>
+	<a controller="markers" data-method="delete" href="/markers/{{id}}/destroy" id='infoDelBtn' class="btn btn-danger">Destroy</a>
 </div>

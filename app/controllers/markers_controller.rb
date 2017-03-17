@@ -57,7 +57,7 @@ class MarkersController < ApplicationController
       if @marker.update_attributes(marker_params)
         format.html { redirect_to map_url(@map), notice: 'Marker was successfully updated.' }
         format.js
-        format.json { render :show, status: :ok, location: @markers }
+
       else
         format.html { render :edit }
         format.json { render json: @marker.errors, status: :unprocessable_entity }

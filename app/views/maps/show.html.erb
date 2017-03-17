@@ -1,28 +1,40 @@
+<div class="jumbotron">
+  <h1 class="display-3"><%= @map.title %></h1>
+</div>
+<div class="btn-group" role="group">
+  <%= link_to "Back To Maps", maps_path, class: 'btn btn-default btn-lg' %>
+  <button class="btn btn-default btn-lg"><%= link_to "Show Markers", controller: "markers", action: "index", map_id: @map %></button>
+  <%= link_to "Calendar", map_events_path(@map), class: 'btn btn-default btn-lg'  %>
+</div>
 
-<section>
-<h1><%= @map.title %></h1>
-<h3><%= link_to "Back To Maps", maps_path %></h3>
-<h3>  <%= link_to "Show Markers", controller: "markers", action: "index", map_id: @map%></h3>
-<h3><%= link_to "Calendar", map_events_path(@map) %></h3>
-
-</section>
 
 <div id="form">
   <%= render 'markers/form' %>
 </div>
-  <div id="directionForm">
-    <strong>Mode of Travel: </strong>
+<!-- <script id="travelMode" type="text/x-handlebars-template">
+  <div class="directionForm">
+    <h2>Mode of Travel: </h2>
     <select id="mode">
       <option value="DRIVING">Driving</option>
       <option value="WALKING">Walking</option>
       <option value="BICYCLING">Bicycling</option>
       <option value="TRANSIT">Transit</option>
     </select>
-    <button id="directionsBtn">Get Directions</button>
+    <button class='directionsBtn' class='btn btn-success'>Get Directions</button>
   </div>
+</script> -->
+<!-- <div id="directionForm" class="field form-group">
+  <label for="mode">Mode of Travel: </label>
+  <select id="mode", class="form-control">
+    <option value="DRIVING">Driving</option>
+    <option value="WALKING">Walking</option>
+    <option value="BICYCLING">Bicycling</option>
+    <option value="TRANSIT">Transit</option>
+  </select>
+  <button id="directionsBtn" class="btn-default">Get Directions</button>
+</div> -->
+
 <div id="map"></div>
 <div id="right-panel"></div>
-<table id="markers" >
-<%= render(@map.markers) %>
-</table>
+
   <%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCq9JRLgL2ATvunEN0vRZ7g3fBeBiVznUo&libraries=places&callback=initialize' %>

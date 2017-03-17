@@ -11,29 +11,29 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <%= f.hidden_field :map_id, value: @map %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <%= f.hidden_field :marker_id, value: @marker %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <p>Start Date: <%= @date %></p>
     <%= f.date_select :start_time, default: @date %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :end_time, 'End Date:' %><br>
     <%= f.date_select :end_time , default: @date %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :document %><br>
-    <%= f.file_field :document %>
+    <%= f.file_field :document, class: "form-control" %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'New Event' , class: "btn btn-default"%>
   </div>
 <% end %>

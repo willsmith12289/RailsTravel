@@ -1,19 +1,19 @@
 <div id='calForm'>
-	<form class='new_event' id='new_event' enctype='multipart/form-data' action='/events' method='post'>
-		<div class='field'>
+	<form class='new_event' id='new_event' enctype='multipart/form-data' action='/events' method='post' role='form'>
+		<div class='form-group'>
 			<label for='event_name'>Name:</label>
-			<input type='text' name='event[name]' id='event_name'>
+			<input type='text' name='event[name]' id='event_name' class="form-control">
 		</div>
 
-		<div class='field'>
+		<div class='form-group'>
 			<input type='hidden' name='event[map_id]' id='event_map_id' value='{{mapId}}'>
 		</div>
 
-		<div class='field'>
+		<div class='form-group'>
 			<input type='hidden' name='event[marker_id]' id='event_marker_id' value='{{id}}'>
 		</div>
 
-		<div class='field'>
+		<div class='form-group'>
 			<label for='event_start_time'>Start Date:</label>
 			<select id='event_start_time_1i' name='event[start_time(1i)]'>
 				<option value='2017'>2017</option>
@@ -73,7 +73,7 @@
 				<option value='31'>31</option>
 			</select>
 		</div>
-		<div class='field'>
+		<div class='form-group'>
 			<label for='event_end_time'>End Date:</label>
 			<select id='event_end_time_1i' name='event[end_time(1i)]'>
 				<option value='2017'>2017</option>
@@ -133,12 +133,12 @@
 				<option value='31'>31</option>
 			</select>
 		</div>
-		<div class='field'>
+		<div class='form-group'>
 			<label for='event_document'>Document</label>
-			<input type='file' name='event[document]' id='event_document'>
+			<input type='file' name='event[document]' id='event_document' class="form-control">
 		</div>
 		<div class='actions'>
-			<input type='submit' value='Create Event' name='commit'>
+			<input type='submit' value='Create Event' name='commit' class="btn btn-success">
 		</div>
 	</form>
 </div>

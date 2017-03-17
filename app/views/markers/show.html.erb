@@ -35,6 +35,6 @@
   <%= @marker.place_id %>
 </p>
 
-<%= link_to 'Edit', edit_marker_path(@marker) %>
-<%= link_to 'Delete', marker_path(@marker.id) %>
-<%= link_to 'Show Markers', map_markers_path(@marker.map_id) %>
+<%= link_to 'Edit', edit_marker_path(@marker), class: "btn btn-default" %>
+<%= link_to 'Delete', marker_path(@marker.id), class: "btn btn-default" %>
+<%= link_to 'Show Markers', map_markers_path(@marker.map_id), class: "btn btn-default" %>
