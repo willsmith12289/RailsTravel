@@ -284,4 +284,20 @@ function initialize() {
 		getDirections(place, latLng);
 	};
 
+	function radarSearch() {
+		var request = {
+			bounds: map.getBounds(),
+			keyword: 'restaurants'
+		};
+		service.radarSearch(request, function(results, status) {
+			if (status !== google.maps.places.PlacesServiceStatus.OK) {
+          console.error(status);
+          return;
+      }
+      for (var i = 0, result; result = results[i]; i++) {
+        addMarker(result);
+      }
+		});
+	}
+	radarSearch();
 };
