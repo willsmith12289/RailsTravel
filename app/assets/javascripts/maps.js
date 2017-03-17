@@ -1,6 +1,6 @@
 var markers = [],
-	map,
-	directionsBtn;
+	map;
+//directionsBtn;
 
 function initialize() {
 	var lat = parseFloat(gon.lat),
@@ -16,23 +16,25 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
+
 	var directionsService = new google.maps.DirectionsService(),
 		directionsDisplay = new google.maps.DirectionsRenderer(),
-		directionsBtn = document.getElementById('directionsBtn'),
 		directionForm = document.getElementById('directionForm'),
 		mapCanvas = document.getElementById('map'),
 		map = new google.maps.Map(mapCanvas, myOptions),
 		placeInput = document.getElementById('marker_place_id'),
-
 		addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
 		form = document.getElementById('form'),
 		markLat = document.getElementById('marker_latitude'),
 		markLng = document.getElementById('marker_longitude');
 
+
 	form.addEventListener("submit", autoComplete);
 	map.addListener('bounds_changed', function() {
 		addressInput.setBounds(map.getBounds());
 	});
+
+
 	/*
 	 * passes place_id from exisiting marker models to getPlaceFromId
 	 * traverses hidden table and assigns place_id to the corresponding
@@ -41,8 +43,8 @@ function initialize() {
 	document.addEventListener("DOMContentLoaded", function() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
-		var j = 0
-		console.log("j:" + j)
+		var j = 0;
+		console.log("j:" + j);
 		var interval = setInterval(function() {
 			if (j >= placeIds.length) {
 				console.log("caling clear interval" + j);
@@ -165,6 +167,7 @@ function initialize() {
 
 		try {
 			var placeInfo = {
+				place: place,
 				name: place.name,
 				open: place.opening_hours.open_now,
 				address: place.vicinity,
@@ -185,6 +188,7 @@ function initialize() {
 		} catch (e) {
 			try {
 				placeInfo = {
+					place: place,
 					name: place.name,
 					open: place.opening_hours.open_now,
 					address: place.vicinity,
@@ -202,6 +206,7 @@ function initialize() {
 				}
 			} catch (e) {
 				placeInfo = {
+					place: place,
 					name: place.name,
 					address: place.vicinity,
 					coords: place.geometry.location,
@@ -213,7 +218,6 @@ function initialize() {
 					id: marker.id,
 					mapId: gon.map_id
 				}
-
 			}
 		}
 		var content = HandlebarsTemplates['infowindow'](placeInfo);
@@ -223,64 +227,63 @@ function initialize() {
 		var eventContent = HandlebarsTemplates['calendar'](placeInfo);
 		marker.infowindow.addTab('Add Event', eventContent);
 
+		var directionsContent = HandlebarsTemplates['travelMode'](place);
+		marker.infowindow.addTab('Get Directions', directionsContent);
+
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
-			
-			
-			//editInfo(marker, placeInfo.name);
-			//addEvent(marker, marker.id);
 			if (!marker.infowindow.isOpen()) {
 				geoLocate(place);
 				marker.infowindow.open(map, marker);
-				directionForm.style.display = "inherit";
+				//directionForm.style.display = "inherit";
 			}
-
 		});
-
-		document.onload = google.maps.event.addListener(marker.infowindow, 'closeclick', function() {
-				directionForm.style.display = "none";
-		});
-}
-
-
-function getDirections(place, latLng) {
-	directionsDisplay.setMap(map);
-	directionsDisplay.setPanel(document.getElementById('right-panel'));
-	var control = document.getElementById('directionForm');
-	control.style.display = 'block';
-	map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
-	var start = latLng,
-		end = place.geometry.location,
-		mode = document.getElementById('mode').value;
-	var request = {
-		origin: start,
-		destination: end,
-		travelMode: google.maps.TravelMode[mode]
-	};
-	directionsService.route(request, function(result, status) {
-		if (status == 'OK') {
-			directionsDisplay.setDirections(result);
-		} else {
-			console.log("error: " + status);
-		}
-	});
-}
-
-
-function geoLocate(place) {
-	if (navigator.geolocation) {
-		navigator.geolocation.watchPosition(function(position) {
-			showPosition(position, place)
-		});
-	} else {
-		alert("Geolocation is not supported by this browser.");
+		// document.onload = google.maps.event.addListener(marker.infowindow, 'closeclick', function() {
+		// 		directionForm.style.display = "none";
+		// });
 	}
-}
 
 
-function showPosition(position, place) {
-	directionsBtn.onclick = function() {
+	function getDirections(place, latLng) {
+		directionsDisplay.setMap(map);
+		directionsDisplay.setPanel(document.getElementById('right-panel'));
+		// var control = document.getElementsByClassName('directionForm');
+		// control.style.display = 'block';
+		// map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+		var start = latLng,
+			end = place.geometry.location,
+			mode = document.getElementById('mode').value;
+		var request = {
+			origin: start,
+			destination: end,
+			travelMode: google.maps.TravelMode[mode]
+		};
+		directionsService.route(request, function(result, status) {
+			if (status == 'OK') {
+				directionsDisplay.setDirections(result);
+			} else {
+				console.log("error: " + status);
+			}
+		});
+	}
+
+
+	function geoLocate(place) {
+
+		if (navigator.geolocation) {
+			navigator.geolocation.watchPosition(function(position) {
+				var directionsBtn = document.getElementsByClassName('directionsBtn');
+				directionsBtn.onclick = showPosition(position, place);
+			});
+		} else {
+			alert("Geolocation is not supported by this browser.");
+		}
+	}
+
+
+	function showPosition(position, place) {
+		console.log("here");
 		var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		getDirections(place, latLng);
 	};
-};
+
 };

@@ -12,18 +12,22 @@
 
 </head>
 <body>
-
-
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  <%= link_to "Sign Up", new_user_registration_path(@user) %>
-  <%= link_to "Sign In", new_user_session_path(@user) %>
-  <%= link_to "Sign Out", destroy_user_session_path(@user), method: :delete %>
-  <% if user_signed_in? %>
-    <span class="email"><%= current_user.email %></span>
-  <% else %>
-    <span></span>
-  <% end %>
+  <nav class="navbar fixed-top navbar-toggleable-lg navbar-inverse bg-inverse">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <span class="navbar-text"><%= link_to "Sign Up", new_user_registration_path(@user), class: "btn btn-inverse" %></span>
+        <span class="navbar-text"><%= link_to "Sign In", new_user_session_path(@user), class: "btn btn-inverse" %></span>
+        <span class="navbar-text"><%= link_to "Sign Out", destroy_user_session_path(@user), method: :delete, class: "btn btn-inverse" %></span>
+        <% if user_signed_in? %>
+          <span class="navbar-text"><%= current_user.email %></span>
+        <% else %>
+          <span></span>
+        <% end %>
+          <p class="notice"><%= notice %></p>
+          <p class="alert"><%= alert %></p>
+      </div>
+    </div>
+  </nav>
 
 <%= yield %>
 

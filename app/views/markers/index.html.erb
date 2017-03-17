@@ -26,9 +26,9 @@
         <td><%= marker.info %></td>
         <td><%= marker.map_id %></td>
         <td><%= marker.id %></td>
-        <td><%= link_to 'Show', marker_path(marker), controller: 'markers',action: 'show'  %></td>
-        <td><%= link_to 'Edit', edit_marker_path(marker) %></td>
-        <td><%= link_to 'Destroy', marker_path(marker), controller: 'markers', method: :delete %></td>
+        <td><%= link_to 'Show', marker_path(marker), controller: 'markers',action: 'show', class: "btn btn-default"  %></td>
+        <td><%= link_to 'Edit', edit_marker_path(marker), class: "btn btn-default" %></td>
+        <td><%= link_to 'Destroy', marker_path(marker), controller: 'markers', method: :delete, class: "btn btn-default" %></td>
       </tr>
     <% end %>
   </tbody>

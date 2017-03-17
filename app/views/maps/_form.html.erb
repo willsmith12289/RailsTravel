@@ -1,11 +1,11 @@
 <%= form_for @map do |f| %>
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :title %>
-    <%= f.text_field :title %>
+    <%= f.text_field :title, class: "form-control" %>
   </div>
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :raw_address, 'Address' %>
-    <%= f.text_field :raw_address %>
+    <%= f.text_field :raw_address, class: "form-control" %>
   </div>
-  <%= f.submit 'Add!', class: 'btn btn-primary' %>
+  <%= f.submit 'Add!', class: 'btn btn-success' %>
 <% end %>
