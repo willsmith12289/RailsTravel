@@ -138,7 +138,7 @@ function initialize() {
 		});
 		markers.push(marker);
 		marker.infowindow = new InfoBubble({
-			maxWidth: 300
+			maxWidth: 200
 		});
 
 		var markerCluster = new MarkerClusterer(map, markers, {
@@ -235,6 +235,8 @@ function initialize() {
 				geoLocate(place);
 				marker.infowindow.open(map, marker);
 				//directionForm.style.display = "inherit";
+			} else {
+				marker.infowindow.close();
 			}
 		});
 		// document.onload = google.maps.event.addListener(marker.infowindow, 'closeclick', function() {
@@ -246,9 +248,7 @@ function initialize() {
 	function getDirections(place, latLng) {
 		directionsDisplay.setMap(map);
 		directionsDisplay.setPanel(document.getElementById('right-panel'));
-		// var control = document.getElementsByClassName('directionForm');
-		// control.style.display = 'block';
-		// map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
 		var start = latLng,
 			end = place.geometry.location,
 			mode = document.getElementById('mode').value;
@@ -268,11 +268,10 @@ function initialize() {
 
 
 	function geoLocate(place) {
-
 		if (navigator.geolocation) {
 			navigator.geolocation.watchPosition(function(position) {
 				var directionsBtn = document.getElementsByClassName('directionsBtn');
-				directionsBtn.onclick = showPosition(position, place);
+				directionsBtn.onclick = getPosition(position, place);
 			});
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -280,8 +279,7 @@ function initialize() {
 	}
 
 
-	function showPosition(position, place) {
-		console.log("here");
+	function getPosition(position, place) {
 		var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		getDirections(place, latLng);
 	};
