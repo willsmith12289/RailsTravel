@@ -16,6 +16,7 @@ function initialize() {
 		scrollwheel: false,
 		draggable: true,
 	};
+
 	var directionsService = new google.maps.DirectionsService(),
 		directionsDisplay = new google.maps.DirectionsRenderer(),
 		directionsBtn = document.getElementById('directionsBtn'),
@@ -43,8 +44,8 @@ function initialize() {
 	document.addEventListener("DOMContentLoaded", function() {
 		var placeIds = gon.place_id;
 		var id = gon.marker;
-		var j = 0
-		console.log("j:" + j)
+		var j = 0;
+		console.log("j:" + j + directionsBtn);
 		var interval = setInterval(function() {
 			if (j >= placeIds.length) {
 				console.log("caling clear interval" + j);
@@ -167,6 +168,7 @@ function initialize() {
 
 		try {
 			var placeInfo = {
+				place: place,
 				name: place.name,
 				open: place.opening_hours.open_now,
 				address: place.vicinity,
@@ -187,6 +189,7 @@ function initialize() {
 		} catch (e) {
 			try {
 				placeInfo = {
+					place: place,
 					name: place.name,
 					open: place.opening_hours.open_now,
 					address: place.vicinity,
@@ -204,6 +207,7 @@ function initialize() {
 				}
 			} catch (e) {
 				placeInfo = {
+					place: place,
 					name: place.name,
 					address: place.vicinity,
 					coords: place.geometry.location,
@@ -224,16 +228,19 @@ function initialize() {
 		var eventContent = HandlebarsTemplates['calendar'](placeInfo);
 		marker.infowindow.addTab('Add Event', eventContent);
 
+		var directionsContent = HandlebarsTemplates['travelMode'](placeInfo);
+		placeInfo.stringify = JSON.stringify(placeInfo);
+		marker.infowindow.addTab('Get Directions', directionsContent);
+
 		document.onload = google.maps.event.addListener(marker, 'click', function() {
 			if (!marker.infowindow.isOpen()) {
-				geoLocate(place);
 				marker.infowindow.open(map, marker);
-				directionForm.style.display = "inherit";
+				//directionForm.style.display = "inherit";
 			}
 		});
-		document.onload = google.maps.event.addListener(marker.infowindow, 'closeclick', function() {
-				directionForm.style.display = "none";
-		});
+		// document.onload = google.maps.event.addListener(marker.infowindow, 'closeclick', function() {
+		// 		directionForm.style.display = "none";
+		// });
 	}
 
 
@@ -264,7 +271,7 @@ function initialize() {
 	function geoLocate(place) {
 		if (navigator.geolocation) {
 			navigator.geolocation.watchPosition(function(position) {
-				showPosition(position, place)
+				showPosition(position, place);
 			});
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -273,9 +280,11 @@ function initialize() {
 
 
 	function showPosition(position, place) {
-		directionsBtn.onclick = function() {
+		console.log(directionsBtn);
+		$(document).on('click', 'directionsBtn', function(position, place) {
 			var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			getDirections(place, latLng);
-		};
+		});
 	};
+
 };
