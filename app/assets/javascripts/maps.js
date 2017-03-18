@@ -17,6 +17,9 @@ function initialize() {
 		draggable: true,
 	};
 
+/*
+*	Global Variables
+*/
 	var directionsService = new google.maps.DirectionsService(),
 		directionsDisplay = new google.maps.DirectionsRenderer(),
 		directionForm = document.getElementById('directionForm'),
@@ -36,6 +39,11 @@ function initialize() {
 		addressInput.setBounds(map.getBounds());
 		searchBox.setBounds(map.getBounds());
 	});
+
+
+/*
+*	Add Markers found in nearby Search
+*/
 	searchBox.addListener('places_changed', function() {
 		var places = searchBox.getPlaces();
 		//var bounds = new google.maps.LatLngBounds();
@@ -58,7 +66,7 @@ function initialize() {
 		});
 		map.fitBounds(bounds);
 	});
-
+//	Clear markers found from nearby Search
 document.getElementById('clearSearch').onclick = function () {
 	location.reload();
 }
@@ -316,12 +324,4 @@ function getPosition(position, place) {
 	getDirections(place, latLng);
 };
 
-
-// function radarSearch(key) {
-
-// 	map.addListener('bounds_changed', function() {
-// 		searchBox.setBounds(map.getBounds());
-// 	});
-
-// };
 }
