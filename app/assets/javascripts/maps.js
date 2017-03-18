@@ -22,6 +22,7 @@ function initialize() {
 		directionForm = document.getElementById('directionForm'),
 		mapCanvas = document.getElementById('map'),
 		map = new google.maps.Map(mapCanvas, myOptions),
+		bounds = new google.maps.LatLngBounds(),
 		placeInput = document.getElementById('marker_place_id'),
 		addressInput = new google.maps.places.SearchBox(document.getElementById('marker_raw_address')),
 		searchBox = new google.maps.places.SearchBox(document.getElementById('searchTxt')),
@@ -37,7 +38,7 @@ function initialize() {
 	});
 	searchBox.addListener('places_changed', function() {
 		var places = searchBox.getPlaces();
-		var bounds = new google.maps.LatLngBounds();
+		//var bounds = new google.maps.LatLngBounds();
 		searchBox.setBounds(map.getBounds());
 		if (places.length == 0) {
 			return;
@@ -45,6 +46,7 @@ function initialize() {
 		markers.forEach(function(marker) {
 			marker.setMap(null);
 		});
+
 		places.forEach(function(place) {
 			addMarker(place);
 			if (place.geometry.viewport) {
@@ -57,7 +59,9 @@ function initialize() {
 		map.fitBounds(bounds);
 	});
 
-
+document.getElementById('clearSearch').onclick = function () {
+	location.reload();
+}
 /*
  * passes place_id from exisiting marker models to getPlaceFromId
  * traverses hidden table and assigns place_id to the corresponding
@@ -117,7 +121,7 @@ function getPlaceFromId(place) {
  */
 function autoComplete() {
 	var Gplace = addressInput.getPlaces();
-	var bounds = new google.maps.LatLngBounds();
+	//var bounds = new google.maps.LatLngBounds();
 	Gplace.forEach(function(place) {
 		if (!place.geometry) {
 			console.log("Returned place contains no geometry");
