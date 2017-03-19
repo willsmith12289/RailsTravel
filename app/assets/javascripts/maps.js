@@ -196,6 +196,7 @@ function formatInfoWindow(marker, place) {
 	pIDs.forEach(function(pID, i) {
 		if (place.place_id === pID) {
 			marker.info = infos[i];
+			console.log((marker.info).text);
 			marker.id = ids[i];
 		}
 	}, marker);
