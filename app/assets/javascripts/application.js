@@ -14,7 +14,9 @@
 //= require jquery
 //= require bootstrap-sprockets
 //= require jquery_ujs
+//= require jquery-te
 //= require maps
+//= require markers
 //= require infobubble
 //= require markerclusterer
 //= require_tree ./templates

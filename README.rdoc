@@ -1,2 +1,7 @@
 == README
 
+make all google services global
+
+get radar search working
+	make list in tab
+	
